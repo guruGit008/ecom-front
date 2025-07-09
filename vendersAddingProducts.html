@@ -1,82 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Add Multiple Products</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vendor Product Upload | Tiranga Aerospace</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #F8F8F8;
-      padding: 30px;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2f4f8;
+      padding: 40px;
     }
 
     .form-container {
-      max-width: 900px;
+      max-width: 980px;
       margin: auto;
       background: #ffffff;
-      padding: 30px;
+      padding: 40px;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.05);
-      border-top: 4px solid #1989AC;
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+      border-left: 6px solid #1989AC;
     }
 
-    .form-container h2 {
+    h2, h3 {
       color: #1989AC;
       text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      font-size: 14.5px;
+      color: #444;
+      text-align: center;
       margin-bottom: 30px;
+      line-height: 1.6;
     }
 
     .product-block {
-      background-color: #F8F8F8;
-      border: 1px solid #e4e7ed;
-      padding: 20px;
-      margin-bottom: 20px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 25px;
+      margin-bottom: 30px;
       border-radius: 8px;
       position: relative;
     }
 
     .product-block h4 {
-      margin-top: 0;
+      margin: 0 0 15px;
       color: #333;
+      font-size: 18px;
+    }
+
+    .remove-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      font-weight: bold;
+      cursor: pointer;
     }
 
     label {
-      font-weight: bold;
+      font-weight: 600;
       display: block;
-      margin-top: 12px;
-      color: #333;
+      margin-top: 16px;
+      color: #222;
     }
 
-    input, textarea, select {
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
       width: 100%;
       padding: 10px;
-      margin-top: 6px;
       border-radius: 6px;
-      border: 1px solid #D3D3D3;
+      border: 1px solid #ccc;
+      margin-top: 6px;
       font-size: 15px;
-      background-color: #ffffff;
     }
 
     input[type="file"] {
-      background-color: #ffffff;
+      margin-top: 8px;
     }
 
-    small.note {
-      font-weight: normal;
-      color: #888;
-      display: block;
-      margin-top: 4px;
+    .note, .helper-text {
       font-size: 13px;
+      color: #777;
+      margin-top: 4px;
+      display: block;
     }
 
-    button {
+    .step-title {
+      font-size: 15px;
+      color: #1989AC;
+      font-weight: bold;
       margin-top: 20px;
+      margin-bottom: 6px;
+    }
+
+    .add-btn,
+    .submit-btn {
+      display: inline-block;
       padding: 12px 20px;
       font-size: 16px;
+      margin-top: 20px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      transition: 0.3s ease;
+      transition: background-color 0.3s ease;
     }
 
     .add-btn {
@@ -85,49 +120,53 @@
     }
 
     .add-btn:hover {
-      background-color: #126b88;
+      background-color: #156e88;
     }
 
     .submit-btn {
-      background-color: #1989AC;
+      background-color: #1b998b;
       color: white;
       width: 100%;
     }
 
     .submit-btn:hover {
-      background-color: #126b88;
+      background-color: #147c6f;
     }
 
-    .remove-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: #dc3545;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 4px;
-      font-size: 13px;
-      cursor: pointer;
+    .tag-input {
+      border: 1px dashed #aaa;
+      padding: 6px;
+      font-size: 14px;
+      margin-top: 6px;
     }
 
-    .remove-btn:hover {
-      background-color: #c82333;
+    .success-message {
+      display: none;
+      background: #e6f4ea;
+      border: 1px solid #b6e2c2;
+      padding: 12px;
+      color: #155724;
+      margin-top: 20px;
+      border-radius: 6px;
+      font-weight: 500;
     }
   </style>
 </head>
 <body>
 
   <div class="form-container">
-    <h2>Vendor: Adding Items</h2>
-    <form id="productForm" action="/addProducts" method="POST" enctype="multipart/form-data">
+    <h2>Vendor Product Submission</h2>
+    <div class="description">
+      Submit your product(s) for review and listing in our procurement and distribution ecosystem.<br />
+      Please provide complete, accurate, and clear details for each item.
+    </div>
 
-      <div id="productsContainer">
-        <!-- Product blocks will be added here -->
-      </div>
+    <form id="productForm" action="/addProducts" method="POST" enctype="multipart/form-data">
+      <div id="productsContainer"></div>
 
       <button type="button" class="add-btn" onclick="addProductBlock()">+ Add Another Product</button>
-      <button type="submit" class="submit-btn">Submit All Products</button>
+      <button type="submit" class="submit-btn">🚀 Submit All Products</button>
+      <div class="success-message" id="successMessage">✅ Your products have been submitted successfully!</div>
     </form>
   </div>
 
@@ -138,73 +177,85 @@
       productCount++;
       const container = document.getElementById('productsContainer');
       const block = document.createElement('div');
-      block.classList.add('product-block');
+      block.className = 'product-block';
+
       block.innerHTML = `
-        <button type="button" class="remove-btn" onclick="removeProductBlock(this)">Remove</button>
-        <h4>Product ${productCount}</h4>
+        <button type="button" class="remove-btn" title="Remove Product" onclick="removeProductBlock(this)">×</button>
+        <h4>🧾 Product ${productCount}</h4>
 
-        <label>Product Name</label>
-        <input type="text" name="products[${productCount}].name" required>
+        <div class="step-title">Step 1: Product Basics</div>
+        <label>Product Name *</label>
+        <input type="text" name="products[${productCount}].name" placeholder="e.g., Ultra-Low Noise Amplifier" required>
+        <span class="helper-text">Use standard naming format. Avoid using symbols or abbreviations.</span>
 
-        <label>Description</label>
-        <textarea name="products[${productCount}].description" rows="3" required></textarea>
+        <label>Detailed Description *</label>
+        <textarea name="products[${productCount}].description" rows="4" placeholder="Describe the product’s core features, performance metrics, and applications." required></textarea>
 
-        <label>Price (₹)</label>
-        <input type="number" name="products[${productCount}].price" min="0" required>
+        <label>Tags / Keywords</label>
+        <input type="text" class="tag-input" name="products[${productCount}].tags" placeholder="e.g., RF, LNA, Defense, 10GHz" />
 
-        <label>Category</label>
+        <div class="step-title">Step 2: Commercial Details</div>
+        <label>Unit Price (₹) *</label>
+        <input type="number" name="products[${productCount}].price" min="0" placeholder="e.g., 18500" required>
+        <span class="helper-text">Enter only numbers. Taxes and shipping will be handled separately.</span>
+
+        <label>Category *</label>
         <select name="products[${productCount}].category" required>
-          <option value="">-- Select Category --</option>
-          <option value="raw-materials">Raw Materials</option>
-          <option value="SatCom Products">SATCOM products </option>
-          <option value="Magnets">Magnets</option>
-          <option value="Ceramics">Ceramics</option>
+          <option value="">-- Select Relevant Category --</option>
+          <option value="raw-materials">Raw Materials (Metals, Composites)</option>
+          <option value="satcom-products">SATCOM & RF Communication Modules</option>
+          <option value="magnets">Magnets & Magnetic Assemblies</option>
+          <option value="ceramics">Ceramic Substrates / Dielectrics</option>
+          <option value="electronics">Electronics / Power Supply / PCBs</option>
+          <option value="custom-solutions">Custom or Integrated Solutions</option>
         </select>
 
-        <label>Product Image</label>
+        <div class="step-title">Step 3: Visual Reference</div>
+        <label>Product Image *</label>
         <input type="file" name="products[${productCount}].image" accept="image/*" required onchange="validateImage(this)">
-        <small class="note">Max file size: 100KB. Recommended image ratio: 1:4 (Width:Height)</small>
+        <span class="note">Max size: 100KB | Ideal ratio: 1:4 (Width:Height). Use PNG or JPEG with clear visibility.</span>
       `;
       container.appendChild(block);
     }
 
     function removeProductBlock(button) {
-      const block = button.parentNode;
-      block.remove();
+      button.parentElement.remove();
     }
 
     function validateImage(input) {
       const file = input.files[0];
       if (!file) return;
 
-      // Check file size
       if (file.size > 102400) {
-        alert('Image must be under 100KB.');
+        alert('⚠️ Image must be under 100KB.');
         input.value = '';
         return;
       }
 
-      // Check image ratio
-      const img = new Image();
       const reader = new FileReader();
-
       reader.onload = function (e) {
+        const img = new Image();
         img.onload = function () {
           const ratio = img.width / img.height;
           const roundedRatio = Math.round(ratio * 10) / 10;
           if (roundedRatio !== 4.0) {
-            alert(`Image ratio must be 1:4. Yours is ${roundedRatio.toFixed(1)}:1`);
+            alert(`⚠️ Image ratio must be 1:4. Yours is ${roundedRatio.toFixed(1)}:1.`);
             input.value = '';
           }
         };
         img.src = e.target.result;
       };
-
       reader.readAsDataURL(file);
     }
 
-    // Add the first product block on page load
     window.onload = addProductBlock;
+
+    // Optional: Show message on submit (simulate success)
+    document.getElementById('productForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      document.getElementById('successMessage').style.display = 'block';
+      // In production: remove the line above and let form submit normally
+    });
   </script>
 
 </body>
