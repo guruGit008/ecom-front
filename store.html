@@ -1,0 +1,898 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+		<title>AEROMATX</title>
+
+ 		<!-- Google font -->
+ 		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+ 		<!-- Bootstrap -->
+ 		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+
+ 		<!-- Slick -->
+ 		<link type="text/css" rel="stylesheet" href="css/slick.css"/>
+ 		<link type="text/css" rel="stylesheet" href="css/slick-theme.css"/>
+
+ 		<!-- nouislider -->
+ 		<link type="text/css" rel="stylesheet" href="css/nouislider.min.css"/>
+
+ 		<!-- Font Awesome Icon -->
+ 		<link rel="stylesheet" href="css/font-awesome.min.css">
+
+ 		<!-- Custom stlylesheet -->
+ 		<link type="text/css" rel="stylesheet" href="css/store.css"/>
+
+                <link type="text/css" rel="stylesheet" href="css/index.css"/>
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+         <script>
+            // Cart management functions
+            function getCart() {
+                return JSON.parse(localStorage.getItem('cart')) || [];
+            }
+
+            function saveCart(cart) {
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartDisplay();
+            }
+
+            function addToCart(product) {
+                let cart = getCart();
+                const existingItemIndex = cart.findIndex(item => 
+                    item.id === product.id && 
+                    item.grade === product.grade && 
+                    item.shape === product.shape
+                );
+
+                if (existingItemIndex > -1) {
+                    cart[existingItemIndex].quantity += 1;
+                } else {
+                    cart.push({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image,
+                        grade: product.grade,
+                        shape: product.shape,
+                        quantity: 1
+                    });
+                }
+
+                saveCart(cart);
+                showAddToCartPopup(product.name);
+            }
+
+            function updateCartDisplay() {
+                const cart = getCart();
+                const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+                
+                // Update cart count in header (will be available after header loads)
+                setTimeout(() => {
+                    const cartCountElement = document.getElementById('cart-count');
+                    if (cartCountElement) {
+                        cartCountElement.textContent = cartCount;
+                    }
+                }, 100);
+            }
+
+            function showAddToCartPopup(productName) {
+                // Create popup element
+                const popup = document.createElement('div');
+                popup.className = 'added-to-cart-popup show';
+                popup.innerHTML = `<i class="fa fa-check-circle"></i> ${productName} added to cart!`;
+                
+                document.body.appendChild(popup);
+                
+                // Remove popup after 3 seconds
+                setTimeout(() => {
+                    popup.classList.remove('show');
+                    setTimeout(() => {
+                        if (document.body.contains(popup)) {
+                            document.body.removeChild(popup);
+                        }
+                    }, 500);
+                }, 3000);
+            }
+
+            function handleAddToCart(button) {
+                const productElement = button.closest('.product');
+                const gradeSelector = productElement.querySelector('.grade-selector');
+                const shapeSelector = productElement.querySelector('.shape-selector');
+                
+                const product = {
+                    id: productElement.getAttribute('data-product-id'),
+                    name: productElement.getAttribute('data-product-name'),
+                    price: parseFloat(productElement.getAttribute('data-product-price')),
+                    image: productElement.getAttribute('data-product-image'),
+                    grade: gradeSelector.value,
+                    shape: shapeSelector.value
+                };
+
+                addToCart(product);
+            }
+
+            // Initialize cart display on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                updateCartDisplay();
+            });
+
+            // Cart Modal Functions
+            function openCartModal() {
+                displayModalCartItems();
+                updateModalTotals();
+                $('#cartModal').modal('show');
+            }
+
+            function displayModalCartItems() {
+                const cart = getCart();
+                const container = document.getElementById('modal-cart-items-container');
+                
+                if (cart.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center" style="padding: 40px;">
+                            <i class="fa fa-shopping-cart" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i>
+                            <h4>Your cart is empty</h4>
+                            <p class="text-muted">Add some products to get started!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = '';
+                cart.forEach((item, index) => {
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.innerHTML = `
+                        <div class="row align-items-center">
+                            <div class="col-md-2">
+                                <img src="${item.image}" alt="${item.name}" class="img-fluid">
+                            </div>
+                            <div class="col-md-4">
+                                <h6>${item.name}</h6>
+                                <small class="text-muted">Grade: ${item.grade} | Shape: ${item.shape}</small>
+                            </div>
+                            <div class="col-md-2">
+                                <strong>$${item.price.toFixed(2)}</strong>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="quantity-controls">
+                                    <button onclick="updateModalCartQuantity('${item.id}', '${item.grade}', '${item.shape}', ${item.quantity - 1})">-</button>
+                                    <input type="number" value="${item.quantity}" min="1" onchange="updateModalCartQuantity('${item.id}', '${item.grade}', '${item.shape}', this.value)">
+                                    <button onclick="updateModalCartQuantity('${item.id}', '${item.grade}', '${item.shape}', ${item.quantity + 1})">+</button>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <button class="btn btn-sm btn-outline-danger" onclick="removeModalCartItem('${item.id}', '${item.grade}', '${item.shape}')">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(cartItem);
+                });
+            }
+
+            function updateModalCartQuantity(productId, grade, shape, newQuantity) {
+                if (newQuantity < 1) {
+                    removeModalCartItem(productId, grade, shape);
+                    return;
+                }
+                
+                let cart = getCart();
+                const itemIndex = cart.findIndex(item => 
+                    item.id === productId && item.grade === grade && item.shape === shape
+                );
+                
+                if (itemIndex > -1) {
+                    cart[itemIndex].quantity = parseInt(newQuantity);
+                    saveCart(cart);
+                    displayModalCartItems();
+                    updateModalTotals();
+                }
+            }
+
+            function removeModalCartItem(productId, grade, shape) {
+                removeFromCart(productId, grade, shape);
+                displayModalCartItems();
+                updateModalTotals();
+            }
+
+            function updateModalTotals() {
+                const cart = getCart();
+                const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+                const shipping = 50.00;
+                const tax = subtotal * 0.08; // 8% tax
+                const total = subtotal + shipping + tax;
+
+                document.getElementById('modal-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+                document.getElementById('modal-tax').textContent = `$${tax.toFixed(2)}`;
+                document.getElementById('modal-total').textContent = `$${total.toFixed(2)}`;
+            }
+
+            function proceedToCheckout() {
+                const cart = getCart();
+                if (cart.length === 0) {
+                    // Using a custom modal/message box instead of alert()
+                    const messageBox = document.createElement('div');
+                    messageBox.style.cssText = `
+                        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                        background-color: #f44336; color: white; padding: 20px; border-radius: 5px;
+                        z-index: 10000; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                    `;
+                    messageBox.textContent = "Your cart is empty. Please add some items before checkout.";
+                    document.body.appendChild(messageBox);
+                    setTimeout(() => {
+                        messageBox.remove();
+                    }, 3000);
+                    return;
+                }
+                window.location.href = "checkout.html";
+            }
+
+            function removeFromCart(productId, grade, shape) {
+                let cart = getCart();
+                cart = cart.filter(item => !(item.id === productId && item.grade === grade && item.shape === shape));
+                saveCart(cart);
+            }
+        </script>
+
+    </head>
+	<body>
+		<!-- HEADER -->
+         	<div id="header-placeholder"></div>
+		<!-- /NAVIGATION -->
+
+		<!-- BREADCRUMB -->
+	<div id="breadcrumb" class="section">
+    <div class="container">
+        <nav class="breadcrumb-nav" aria-label="breadcrumb">
+            <ul class="breadcrumb-tree">
+                <li><a href="index.html"><i class="fa fa-home"></i> Home</a></li>
+
+                <li class="active">Raw Materials</li>
+            </ul>
+        </nav>  
+    </div>
+
+
+		<!-- /BREADCRUMB -->
+
+<!-- Raw Materials products -->
+        <!-- SECTION -->
+		<div class="section">
+			<!-- container -->
+			<div class="container-fluid">
+				<!-- row -->
+				<div class="row justify-content-center">
+					<!-- STORE -->
+					<div id="store" class="col-md-9">
+											<!-- store products -->
+						<div class="row">
+							<!-- Product 1 -->
+							<div class="col-md-3 col-xs-6">
+								<div class="product" data-product-id="aluminium" data-product-name="Aluminium" data-product-price="980.00" data-product-image="./img/alluminum.jfif">
+									<a href="product.html">
+										<div class="product-img">
+										<img src="./img/alluminum.jfif" alt="">
+										<div class="product-label"></div>
+										<div class="product-btns-overlay">
+											<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+											<a href="product.html"><button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button></a>
+										</div>
+									</div>
+									</a>
+
+									<div class="product-body">
+										<p class="product-category">Raw Materials</p>
+										<h3 class="product-name"><a href="#">Aluminium</a></h3>
+										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+										<div class="product-specs mb-2">
+											<div class="row">
+												<div class="col-6">
+													<label>Grade</label>
+													<select class="form-control form-control-sm grade-selector">
+														<option value="6061">6061</option>
+														<option value="3003">3003</option>
+														<option value="7075">7075</option>
+														<option value="5086">5086</option>
+														<option value="5052">5052</option>
+														<option value="7475">7475</option>
+													</select>
+												</div>
+												<div class="col-6">
+													<label>Shape</label>
+													<select class="form-control form-control-sm shape-selector">
+														<option value="Bar">Bar</option>
+														<option value="Sheet">Sheet</option>
+														<option value="Strip">Strip</option>
+														<option value="Plate">Plate</option>
+														<option value="Wire">Wire</option>
+														<option value="Rods">Rods</option>
+														<option value="Tee Sections">Tee Sections</option>
+														<option value="Channel">Channel</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="product-action d-flex">
+										<button class="btn btn-primary add-to-cart-btn" onclick="handleAddToCart(this)">
+											<i class="fa fa-shopping-cart mr-1"></i>Add to Cart
+										</button>
+										<button class="btn btn-outline-dark customize-product" data-toggle="modal" data-target="#customizeModal">
+											<i class="fa fa-cog mr-1">Customize</i>
+										</button>
+									</div>
+								</div>
+							</div>
+
+							<!-- Product 2 -->
+							<div class="col-md-3 col-xs-6">
+								<div class="product" data-product-id="aluminium-welding" data-product-name="Aluminium Welding Alloys" data-product-price="980.00" data-product-image="./img/alluminiumweldingalloys.jpeg">
+									<div class="product-img">
+										<img src="./img/alluminiumweldingalloys.jpeg" alt="">
+										<div class="product-label"></div>
+										<div class="product-btns-overlay">
+											<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+										</div>
+									</div>
+
+									<div class="product-body">
+										<p class="product-category">Raw Materials</p>
+										<h3 class="product-name"><a href="#">Aluminium Welding Alloys</a></h3>
+										<h4 class="product-price">$780.00 <del class="product-old-price">$990.00</del></h4>
+										<div class="product-specs mb-2">
+											<div class="row">
+												<div class="col-6">
+													<label>Grade</label>
+													<select class="form-control form-control-sm grade-selector">
+														<option value="6061">6061</option>
+														<option value="3003">3003</option>
+														<option value="7075">7075</option>
+														<option value="5086">5086</option>
+														<option value="5052">5052</option>
+														<option value="7475">7475</option>
+													</select>
+												</div>
+												<div class="col-6">
+													<label>Shape</label>
+													<select class="form-control form-control-sm shape-selector">
+														<option value="Bar">Bar</option>
+														<option value="Sheet">Sheet</option>
+														<option value="Strip">Strip</option>
+														<option value="Plate">Plate</option>
+														<option value="Wire">Wire</option>
+														<option value="Rods">Rods</option>
+														<option value="Tee Sections">Tee Sections</option>
+														<option value="Channel">Channel</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="product-action d-flex">
+										<button class="btn btn-primary add-to-cart-btn" onclick="handleAddToCart(this)">
+											<i class="fa fa-shopping-cart mr-1"></i>Add to Cart
+										</button>
+										<button class="btn btn-outline-dark customize-product" data-toggle="modal" data-target="#customizeModal">
+											<i class="fa fa-cog mr-1"></i>Customize
+										</button>
+									</div>
+								</div>
+							</div>
+
+							<!-- Product 3 -->
+							<div class="col-md-3 col-xs-6">
+								<div class="product" data-product-id="aluminium-alloy" data-product-name="Aluminium Alloy" data-product-price="980.00" data-product-image="./img/alluminumalloys.jpeg">
+									<div class="product-img">
+										<img src="./img/alluminumalloys.jpeg" alt="">
+										<div class="product-label"></div>
+										<div class="product-btns-overlay">
+											<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+										</div>
+									</div>
+
+									<div class="product-body">
+										<p class="product-category">Raw Materials</p>
+										<h3 class="product-name"><a href="#">Aluminium Alloy</a></h3>
+										<h4 class="product-price">$680.00 <del class="product-old-price">$990.00</del></h4>
+										<div class="product-specs mb-2">
+											<div class="row">
+												<div class="col-6">
+													<label>Grade</label>
+													<select class="form-control form-control-sm grade-selector">
+														<option value="6061">6061</option>
+														<option value="3003">3003</option>
+														<option value="7075">7075</option>
+														<option value="5086">5086</option>
+														<option value="5052">5052</option>
+														<option value="7475">7475</option>
+													</select>
+												</div>
+												<div class="col-6">
+													<label>Shape</label>
+													<select class="form-control form-control-sm shape-selector">
+														<option value="Bar">Bar</option>
+														<option value="Sheet">Sheet</option>
+														<option value="Strip">Strip</option>
+														<option value="Plate">Plate</option>
+														<option value="Wire">Wire</option>
+														<option value="Rods">Rods</option>
+														<option value="Tee Sections">Tee Sections</option>
+														<option value="Channel">Channel</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="product-action d-flex">
+										<button class="btn btn-primary add-to-cart-btn" onclick="handleAddToCart(this)">
+											<i class="fa fa-shopping-cart mr-1"></i>Add to Cart
+										</button>
+										<button class="btn btn-outline-dark customize-product" data-toggle="modal" data-target="#customizeModal">
+											<i class="fa fa-cog mr-1"></i>Customize
+										</button>
+									</div>
+								</div>
+							</div>
+
+							<!-- Product 4 -->
+							<div class="col-md-3 col-xs-6">
+								<div class="product" data-product-id="copper-alloy" data-product-name="Copper Alloy" data-product-price="980.00" data-product-image="./img/copper_alloys.jpeg">
+									<div class="product-img">
+										<img src="./img/copper_alloys.jpeg" alt="">
+										<div class="product-label"></div>
+										<div class="product-btns-overlay">
+											<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+										</div>
+									</div>
+
+									<div class="product-body">
+										<p class="product-category">Raw Materials</p>
+										<h3 class="product-name"><a href="#">Copper Alloy</a></h3>
+										<h4 class="product-price">$580.00 <del class="product-old-price">$990.00</del></h4>
+										<div class="product-specs mb-2">
+											<div class="row">
+												<div class="col-6">
+													<label>Grade</label>
+													<select class="form-control form-control-sm grade-selector">
+														<option value="C101">C101</option>
+														<option value="C110">C110</option>
+														<option value="C260">C260</option>
+														<option value="C360">C360</option>
+														<option value="C464">C464</option>
+														<option value="C510">C510</option>
+													</select>
+												</div>
+												<div class="col-6">
+													<label>Shape</label>
+													<select class="form-control form-control-sm shape-selector">
+														<option value="Bar">Bar</option>
+														<option value="Sheet">Sheet</option>
+														<option value="Strip">Strip</option>
+														<option value="Plate">Plate</option>
+														<option value="Wire">Wire</option>
+														<option value="Rods">Rods</option>
+														<option value="Tube">Tube</option>
+														<option value="Pipe">Pipe</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="product-action d-flex">
+										<button class="btn btn-primary add-to-cart-btn" onclick="handleAddToCart(this)">
+											<i class="fa fa-shopping-cart mr-1"></i>Add to Cart
+										</button>
+										<button class="btn btn-outline-dark customize-product" data-toggle="modal" data-target="#customizeModal">
+											<i class="fa fa-cog mr-1"></i>Customize
+										</button>
+									</div>
+								</div>
+							</div>
+
+							<!-- Product 5 -->
+							<div class="col-md-3 col-xs-6">
+								<div class="product" data-product-id="iridium" data-product-name="Iridium" data-product-price="2500.00" data-product-image="./img/iridium.jpeg">
+									<div class="product-img">
+										<img src="./img/iridium.jpeg" alt="">
+										<div class="product-label">
+											<span class="new">NEW</span>
+										</div>
+										<div class="product-btns-overlay">
+											<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+										</div>
+									</div>
+
+									<div class="product-body">
+										<p class="product-category">Raw Materials</p>
+										<h3 class="product-name"><a href="#">Iridium</a></h3>
+										<h4 class="product-price">$2500.00 <del class="product-old-price">$2600.00</del></h4>
+										<div class="product-specs mb-2">
+											<div class="row">
+												<div class="col-6">
+													<label>Grade</label>
+													<select class="form-control form-control-sm grade-selector">
+														<option value="99.9%">99.9%</option>
+														<option value="99.95%">99.95%</option>
+														<option value="99.99%">99.99%</option>
+													</select>
+												</div>
+												<div class="col-6">
+													<label>Shape</label>
+													<select class="form-control form-control-sm shape-selector">
+														<option value="Powder">Powder</option>
+														<option value="Wire">Wire</option>
+														<option value="Sheet">Sheet</option>
+														<option value="Rod">Rod</option>
+														<option value="Crucible">Crucible</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="product-action d-flex">
+										<button class="btn btn-primary add-to-cart-btn" onclick="handleAddToCart(this)">
+											<i class="fa fa-shopping-cart mr-1"></i>Add to Cart
+										</button>
+										<button class="btn btn-outline-dark customize-product" data-toggle="modal" data-target="#customizeModal">
+											<i class="fa fa-cog mr-1"></i>Customize
+										</button>
+									</div>
+								</div>
+							</div>
+
+							<!-- Product 6 -->
+							<div class="col-md-3 col-xs-6">
+								<div class="product" data-product-id="titanium" data-product-name="Titanium" data-product-price="1200.00" data-product-image="./img/titanium.jpg">
+									<div class="product-img">
+										<img src="./img/titanium.jpg" alt="" onerror="this.src='./img/alluminum.jfif'">
+										<div class="product-label"></div>
+										<div class="product-btns-overlay">
+											<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+										</div>
+									</div>
+
+									<div class="product-body">
+										<p class="product-category">Raw Materials</p>
+										<h3 class="product-name"><a href="#">Titanium</a></h3>
+										<h4 class="product-price">$1200.00 <del class="product-old-price">$1250.00</del></h4>
+										<div class="product-specs mb-2">
+											<div class="row">
+												<div class="col-6">
+													<label>Grade</label>
+													<select class="form-control form-control-sm grade-selector">
+														<option value="Grade 1">Grade 1</option>
+														<option value="Grade 2">Grade 2</option>
+														<option value="Grade 5">Grade 5</option>
+														<option value="Grade 7">Grade 7</option>
+														<option value="Grade 9">Grade 9</option>
+													</select>
+												</div>
+												<div class="col-6">
+													<label>Shape</label>
+													<select class="form-control form-control-sm shape-selector">
+														<option value="Bar">Bar</option>
+														<option value="Sheet">Sheet</option>
+														<option value="Plate">Plate</option>
+														<option value="Wire">Wire</option>
+														<option value="Tube">Tube</option>
+														<option value="Foil">Foil</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="product-action d-flex">
+										<button class="btn btn-primary add-to-cart-btn" onclick="handleAddToCart(this)">
+											<i class="fa fa-shopping-cart mr-1"></i>Add to Cart
+										</button>
+										<button class="btn btn-outline-dark customize-product" data-toggle="modal" data-target="#customizeModal">
+											<i class="fa fa-cog mr-1"></i>Customize
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /store products -->
+					</div>
+					<!-- /STORE -->
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /SECTION -->
+         
+<!-- Raw Materials products -->
+
+		<!-- Customize Product Modal -->
+		<div class="modal fade" id="customizeModal" tabindex="-1" role="dialog" aria-labelledby="customizeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="customizeModalLabel">Customize Your Product</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="customizeForm">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="customGrade">Grade <span class="text-danger">*</span></label>
+										<select class="form-control" id="customGrade" required>
+											<option value="">Select Grade</option>
+											<option value="6061">6061</option>
+											<option value="3003">3003</option>
+											<option value="7075">7075</option>
+											<option value="5086">5086</option>
+											<option value="5052">5052</option>
+											<option value="7475">7475</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="customShape">Shape <span class="text-danger">*</span></label>
+										<select class="form-control" id="customShape" required>
+											<option value="">Select Shape</option>
+											<option value="Bar">Bar</option>
+											<option value="Sheet">Sheet</option>
+											<option value="Strip">Strip</option>
+											<option value="Plate">Plate</option>
+											<option value="Wire">Wire</option>
+											<option value="Rods">Rods</option>
+											<option value="Tee Sections">Tee Sections</option>
+											<option value="Channel">Channel</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="customLength">Length (mm)</label>
+										<input type="number" class="form-control" id="customLength" placeholder="Enter length">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="customWidth">Width (mm)</label>
+										<input type="number" class="form-control" id="customWidth" placeholder="Enter width">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="customThickness">Thickness (mm)</label>
+										<input type="number" class="form-control" id="customThickness" placeholder="Enter thickness">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="customQuantity">Quantity <span class="text-danger">*</span></label>
+										<input type="number" class="form-control" id="customQuantity" value="1" min="1" required>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="customDescription">Description</label>
+										<textarea class="form-control" id="customDescription" rows="3" placeholder="Optional notes for customization..."></textarea>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-primary" id="addToCartCustom">Add to Cart</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="store-filter clearfix">
+							<span class="store-qty">Showing 20-100 products</span>
+							<ul class="store-pagination">
+								<li class="active">1</li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+							</ul>
+						</div>
+
+
+			
+			   <!-- 10 -->
+
+					<!-- Customize Product Modal -->
+		<div class="modal fade" id="customizeModal" tabindex="-1" role="dialog" aria-labelledby="customizeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="customizeModalLabel">Customize Your Product</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="customizeForm">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="customGrade">Grade <span class="text-danger">*</span></label>
+										<select class="form-control" id="customGrade" required>
+											<option value="">Select Grade</option>
+											<option value="6061">6061</option>
+											<option value="3003">3003</option>
+											<option value="7075">7075</option>
+											<option value="5086">5086</option>
+											<option value="5052">5052</option>
+											<option value="7475">7475</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="customShape">Shape <span class="text-danger">*</span></label>
+										<select class="form-control" id="customShape" required>
+											<option value="">Select Shape</option>
+											<option value="Bar">Bar</option>
+											<option value="Sheet">Sheet</option>
+											<option value="Strip">Strip</option>
+											<option value="Plate">Plate</option>
+											<option value="Wire">Wire</option>
+											<option value="Rods">Rods</option>
+											<option value="Tee Sections">Tee Sections</option>
+											<option value="Channel">Channel</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="customLength">Length (mm)</label>
+										<input type="number" class="form-control" id="customLength" placeholder="Enter length">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="customWidth">Width (mm)</label>
+										<input type="number" class="form-control" id="customWidth" placeholder="Enter width">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="customThickness">Thickness (mm)</label>
+										<input type="number" class="form-control" id="customThickness" placeholder="Enter thickness">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="customQuantity">Quantity <span class="text-danger">*</span></label>
+										<input type="number" class="form-control" id="customQuantity" value="1" min="1" required>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="customDescription">Description</label>
+										<textarea class="form-control" id="customDescription" rows="3" placeholder="Optional notes for customization..."></textarea>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-primary" id="addToCartCustom">Add to Cart</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+						<!-- /store bottom filter -->
+					
+					<!-- container-fluid -->
+</div>
+
+					<!-- /STORE -->
+
+				<!-- /row -->
+		
+			<!-- /SECTION -->
+			<!-- /container -->
+		
+		
+
+	
+
+		<!-- FOOTER -->
+<div id="footer-placeholder"></div>
+		<!-- /FOOTER -->
+
+		<!-- jQuery Plugins -->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/slick.min.js"></script>
+		<script src="js/nouislider.min.js"></script>
+		<script src="js/jquery.zoom.min.js"></script>
+		<script src="js/main1.js"></script>
+    	<script src="js/navigation.js"></script>
+		<script src="js/profileBehviour.js"></script>
+		
+
+		<!-- This script block replicates the header loading logic from your index.html -->
+		<script>
+			$(function () {
+				// Step 1: Load the header
+				$("#header-placeholder").load("header.html", function () {
+					console.log("✅ header.html loaded");
+
+					// Step 2: Load frontend-header logic
+					// frontend-header.js contains updateProfileDisplay and loadFrontendCategories
+					const headerScript = document.createElement('script');
+					headerScript.src = 'js/frontend-header.js?t=' + new Date().getTime(); // prevent cache
+					headerScript.onload = () => {
+						if (typeof loadFrontendCategories === "function") {
+							loadFrontendCategories();
+						}
+						if (typeof updateProfileDisplay === "function") {
+							updateProfileDisplay();
+						}
+					};
+					document.body.appendChild(headerScript);
+
+					// Utility function to wait for an element to exist
+					function waitForElement(selector, callback) {
+						const checkExist = setInterval(() => {
+							const el = document.querySelector(selector);
+							if (el) {
+								clearInterval(checkExist);
+								callback(el);
+							}
+						}, 100);
+					}
+});
+				});
+			
+		</script>
+
+        <script>
+  $(function () {
+    $("#footer-placeholder").load("footer.html", function () {
+      console.log("✅ footer.html loaded");
+    });
+  });
+</script>
+        
+
+	</body>
+</html>

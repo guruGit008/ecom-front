@@ -1,0 +1,3081 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+		<title>AEROMATX</title>
+
+ 		<!-- Google font -->
+ 		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+ 		<!-- Bootstrap -->
+ 		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+
+ 		<!-- Slick -->
+ 		<link type="text/css" rel="stylesheet" href="css/slick.css"/>
+ 		<link type="text/css" rel="stylesheet" href="css/slick-theme.css"/>
+
+ 		<!-- nouislider -->
+ 		<link type="text/css" rel="stylesheet" href="css/nouislider.min.css"/>
+
+ 		<!-- Font Awesome Icon -->
+ 		<link rel="stylesheet" href="css/font-awesome.min.css">
+
+ 		<!-- Custom stlylesheet -->
+ 		<!-- <link type="text/css" rel="stylesheet" href="css/satcom.css"/> -->
+
+                <link type="text/css" rel="stylesheet" href="css/index.css"/>
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+      <style>      
+/*----------------------------*\
+	Buttons
+\*----------------------------*/
+
+.primary-btn {
+  display: inline-block;
+  padding: 12px 30px;
+  background-color: #E8F1F5;
+  border: none;
+  border-radius: 40px;
+  color:black;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-align: center;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.primary-btn:hover, .primary-btn:focus {
+  opacity: 0.9;
+  color: #FFF;
+}
+
+/*----------------------------*\
+	Inputs
+\*----------------------------*/
+
+/*-- Text input --*/
+
+.input {
+  height: 40px;
+  padding: 0px 15px;
+  border: 1px solid #E8F1F5;
+  background-color: #E8F1F5;
+  width: 100%;
+}
+
+textarea.input {
+  padding: 15px;
+  min-height: 90px;
+}
+
+/*-- Number input --*/
+
+.input-number {
+  position: relative;
+}
+
+.input-number input[type="number"]::-webkit-inner-spin-button, .input-number input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-number input[type="number"] {
+  -moz-appearance: textfield;
+  height: 40px;
+  width: 100%;
+  border: 1px solid #E8F1F5;
+  background-color: #F8F8F8;
+  padding: 0px 35px 0px 15px;
+}
+
+.input-number .qty-up, .input-number .qty-down {
+  position: absolute;
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #D3D3D3;
+  background-color: #F8F8F8;
+  text-align: center;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.input-number .qty-up {
+  right: 0;
+  top: 0;
+  border-bottom: 0px;
+}
+
+.input-number .qty-down {
+  right: 0;
+  bottom: 0;
+}
+
+.input-number .qty-up:hover, .input-number .qty-down:hover {
+  background-color: #D3D3D3;
+  color: #1989AC;
+}
+
+/*-- Select input --*/
+
+
+
+
+/*-- checkbox & radio input --*/
+
+.input-radio, .input-checkbox {
+  position: relative;
+  display: block;
+}
+
+.input-radio input[type="radio"]:not(:checked), .input-radio input[type="radio"]:checked, .input-checkbox input[type="checkbox"]:not(:checked), .input-checkbox input[type="checkbox"]:checked {
+  position: absolute;
+  margin-left: -9999px;
+  visibility: hidden;
+}
+
+.input-radio label, .input-checkbox label {
+  font-weight: 500;
+  min-height: 20px;
+  padding-left: 20px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.input-radio input[type="radio"]+label span, .input-checkbox input[type="checkbox"]+label span {
+  position: absolute;
+  left: 0px;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #D3D3D3;
+  background: #F8F8F8;
+}
+
+.input-radio input[type="radio"]+label span {
+  border-radius: 50%;
+}
+
+.input-radio input[type="radio"]+label span:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%) scale(0);
+  -ms-transform: translate(-50%, -50%) scale(0);
+  transform: translate(-50%, -50%) scale(0);
+  background-color: #F8F8F8;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  opacity: 0;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.input-checkbox input[type="checkbox"]+label span:after {
+  content: '✔';
+  position: absolute;
+  top: -2px;
+  left: 1px;
+  font-size: 10px;
+  color: #F8F8F8;
+  opacity: 0;
+  -webkit-transform: scale(0);
+  -ms-transform: scale(0);
+  transform: scale(0);
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.input-radio input[type="radio"]:checked+label span, .input-checkbox input[type="checkbox"]:checked+label span {
+  background-color: #1989AC;
+  border-color: #1989AC;
+}
+
+.input-radio input[type="radio"]:checked+label span:after {
+  opacity: 1;
+  -webkit-transform: translate(-50%, -50%) scale(1);
+  -ms-transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.input-checkbox input[type="checkbox"]:checked+label span:after {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+}
+
+.input-radio .caption, .input-checkbox .caption {
+  margin-top: 5px;
+  max-height: 0;
+  overflow: hidden;
+  -webkit-transition: 0.3s max-height;
+  transition: 0.3s max-height;
+}
+
+.input-radio input[type="radio"]:checked~.caption, .input-checkbox input[type="checkbox"]:checked~.caption {
+  max-height: 800px;
+}
+
+/*----------------------------*\
+	Section
+\*----------------------------*/
+
+.section {
+  padding-top: 3px;
+  padding-bottom: 30px;
+}
+
+.section-title {
+  position: relative;
+  margin-bottom: 30px;
+  margin-top: 15px;
+}
+
+.section-title .title {
+  display: inline-block;
+  text-transform: uppercase;
+  margin: 0px;
+}
+
+.section-title .section-nav {
+  float: right;
+}
+
+.section-title .section-nav .section-tab-nav {
+  display: inline-block;
+}
+
+.section-tab-nav li {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.section-tab-nav li:last-child {
+  margin-right: 0px;
+}
+
+.section-tab-nav li a {
+  font-weight: 700;
+  color: #8D99AE;
+}
+
+.section-tab-nav li a:after {
+  content: "";
+  display: block;
+  width: 0%;
+  height: 2px;
+  background-color: #1989AC;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.section-tab-nav li.active a {
+  color: #1989AC;
+}
+
+.section-tab-nav li a:hover:after, .section-tab-nav li a:focus:after, .section-tab-nav li.active a:after {
+  width: 100%;
+}
+
+.section-title .section-nav .products-slick-nav {
+  top: 0px;
+  right: 0px;
+}
+
+.section .row {
+    max-width: 1400px; /* Or whatever maximum width you prefer, e.g., 1200px */
+    margin-left: auto;
+    margin-right: auto;
+    /* Also ensure no padding on the row itself if you want it to align with the max-width */
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 10px;
+}
+ 
+
+/* new one  */
+/* CSS to center the #store column and make it occupy space better */
+#store {
+    /* Make it take full width of its parent (which is now centered by justify-content-center) */
+    /* This will override the default Bootstrap column behavior slightly for centering */
+    width: 90%; /* Ensure it tries to take up its full allocated 9 columns within the parent row */
+    margin-left: auto; /* Centers the col-md-9 itself */
+    margin-right: auto; /* Centers the col-md-9 itself */
+    float: none; /* Important to remove any left/right floats that might prevent centering */
+}
+
+/* Optional: If you want the items *inside* #store to also be centered when not filling a row */
+/* This applies to the .row that holds your individual products */
+#store .row {
+    justify-content:baseline ;
+}
+
+/* Ensure the .product-action buttons match the image colors and style */
+.product-action .add-to-cart {
+    background-color: #007bff; /* Example: Bootstrap primary blue, adjust to your image's pinkish color */
+    border-color: #007bff;
+    color: #fff;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+    border-right: none;
+}
+
+.product-action .customize-product {
+    background-color: #fff;
+    border-color: #6c757d; /* Example: Bootstrap secondary border, adjust to your image's border color */
+    color: #343a40;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    border-left: 1px solid #6c757d;
+}
+
+.product-action .add-to-cart:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.product-action .customize-product:hover {
+    background-color: #e2e6ea;
+    border-color: #545b62;
+}
+
+/*----------------------------*\
+	Breadcrumb
+\*----------------------------*/
+#breadcrumb {
+    padding: 15px 0;
+    background-color: #f8f9fa; /* Keep a very light background, almost white, for subtle separation */
+    border-bottom: 1px solid #dee2e6; /* Subtle bottom border to define the section */
+}
+
+.breadcrumb-tree {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Use flexbox for horizontal layout */
+    align-items: center; /* Vertically align items */
+}
+
+.breadcrumb-tree li {
+    font-size: 10px;
+    color: #495057; /* Darker muted text color for general items */
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb-tree li a {
+    color: #495057; /* Darker gray for regular links */
+    text-decoration: none;
+    padding: 0 5px; /* Add some padding around links */
+}
+
+.breadcrumb-tree li a:hover {
+    text-decoration: underline;
+    color: #007bff; /* You can make it slightly blue or keep it dark gray on hover */
+}
+
+.breadcrumb-tree li + li:before {
+    content: ">"; /* Separator character */
+    padding: 0 2px; /* Spacing for the separator */
+    color: #6c757d; /* Slightly lighter than text for separator */
+}
+
+.breadcrumb-tree li.active {
+    color: #212529; /* Even darker and more prominent color for the active item */
+    font-weight: 600; /* Make the active item slightly bolder */
+}
+
+/*----------------------------*\
+	product
+\*----------------------------*/
+
+.product {
+  position: relative;
+  margin: 15px 0px;
+  -webkit-box-shadow: 0px 0px 0px 0px #E4E7ED, 0px 0px 0px 1px #E4E7ED;
+  box-shadow: 0px 0px 0px 0px #E4E7ED, 0px 0px 0px 1px #E4E7ED;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.product:hover {
+  -webkit-box-shadow: 0px 0px 6px 0px #E4E7ED, 0px 0px 0px 2px #1989AC;
+  box-shadow: 0px 0px 6px 0px #E4E7ED, 0px 0px 0px 2px #1989AC;
+}
+
+.product .product-img {
+  position: relative;
+}
+
+.product .product-img>img {
+  width: 100%;
+}
+
+.product .product-img .product-label {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.product .product-img .product-label>span {
+  border: 2px solid;
+  padding: 2px 10px;
+  font-size: 12px;
+}
+
+.product .product-img .product-label>span.sale {
+  background-color: #FFF;
+}
+
+.product .product-img .product-label>span.new {
+  background-color: #030303;
+  border-color: #030303;
+  color: #FFF;
+}
+
+.product .product-body {
+  position: relative;
+  padding: 15px;
+  background-color: #FFF;
+  text-align: center;
+  z-index: 20;
+  text-decoration: none;
+}
+
+.product .product-body .product-category {
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #8D99AE;
+}
+
+.product .product-body .product-name {
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.product .product-body .product-name>a {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.product .product-body .product-price {
+  color: #030303;
+  font-size: 18px;
+}
+
+.product .product-body .product-price .product-old-price {
+  font-size: 70%;
+  font-weight: 400;
+  color: #8D99AE;
+}
+
+.product .product-body .product-rating {
+  position: relative;
+  margin: 15px 0px 10px;
+  height: 20px;
+}
+
+.product .product-body .product-rating>i {
+  position: relative;
+  width: 14px;
+  margin-right: -4px;
+  background: #FFF;
+  color: #E4E7ED;
+  z-index: 10;
+}
+
+.product .product-body .product-rating>i.fa-star {
+  color: #1989AC;
+}
+
+.product .product-body .product-rating:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  height: 1px;
+  background-color: #E4E7ED;
+}
+
+.product .product-body .product-btns>button {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background: transparent;
+  border: none;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.product .product-body .product-btns>button:hover {
+  background-color: #E4E7ED;
+  color: #1989AC;
+  border-radius: 50%;
+}
+
+.product .product-body .product-btns>button .tooltipp {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -15px);
+  -ms-transform: translate(-50%, -15px);
+  transform: translate(-50%, -15px);
+  width: 150px;
+  padding: 10px;
+  font-size: 12px;
+  line-height: 10px;
+  background: #1e1f29;
+  color: #FFF;
+  text-transform: uppercase;
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.product .product-body .product-btns>button:hover .tooltipp {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transform: translate(-50%, -5px);
+  -ms-transform: translate(-50%, -5px);
+  transform: translate(-50%, -5px);
+}
+
+
+/* Grade and shape */
+ .product-action {
+    margin-top: 1px;
+}
+.justify-content-between {
+    justify-content: space-between !important;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -30px;
+}
+.d-flex {
+    display: flex !important
+;
+}
+
+   .form-control-sm {
+    height: calc(1.5em + 0.5rem + 2px);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #EDF1FF;
+    border-radius: 0;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.product-specs {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 10px;
+}
+.col-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    font-weight: 500;
+    color: #000;
+}
+.text-center {
+    text-align: center !important;
+}
+
+
+/* store images and add to cart an costimze */
+
+
+/* --- Styles for Wishlist & Quick View Icons on Image Hover (Overlay) --- */
+.product-img {
+    position: relative; /* Essential for positioning children absolutely */
+    overflow: hidden;   /* Ensures nothing overflows */
+    text-align: center; /* Centers the image */
+}
+
+.product-img img {
+    max-width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Remove extra space below image */
+}
+
+/* Overlay container for wishlist/quick view buttons */
+.product-btns-overlay {
+    position: absolute;
+    top: 10px;   /* Position from the top edge */
+    right: 10px; /* Position from the right edge */
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 8px; /* Space between the two icons */
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Important for accessibility and clickability */
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition */
+    z-index: 2; /* Ensure buttons are above the image */
+}
+
+/* Show buttons on hover over the entire product-img area */
+.product-img:hover .product-btns-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Styling for the individual wishlist and quick view buttons */
+.product-btns-overlay button {
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    border: 1px solid #E4E7ED;
+    border-radius: 50%; /* Makes them circular */
+    width: 36px; /* Button size */
+    height: 36px; /* Button size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    padding: 0; /* Remove default button padding */
+    line-height: 1; /* Adjust line height to center icon */
+}
+
+.product-btns-overlay button i {
+    color: #1989AC; /* Icon color */
+    font-size: 16px; /* Icon size */
+}
+
+/* Hide the tooltip text that might be interfering */
+.product-btns-overlay button .tooltipp {
+    display: none; /* Hide the text, only show icon */
+}
+
+.product-btns-overlay button:hover {
+    background-color: #1989AC;
+    border-color: #1989AC;
+}
+
+.product-btns-overlay button:hover i {
+    color: #FFF;
+}
+
+
+/* --- Styles for No-Gap "Add to Cart" and "Customize" Buttons --- */
+.product-action {
+    display: flex; /* Already set by d-flex */
+    width: 100%; /* Ensure the container takes full width */
+    /* Remove any 'gap' property if you added it previously to product-action */
+}
+
+/* Make both buttons take equal space and remove default spacing/borders for merging */
+.product-action .add-to-cart,
+.product-action .customize-product {
+    flex-grow: 1; /* Both buttons will expand to fill the available width equally */
+    flex-basis: 0; /* Ensures they share space equally */
+    border-radius: 0; /* Remove default rounded corners */
+    margin: 0; /* Remove any default margins */
+    padding: 0.375rem 0.75rem; /* Standard Bootstrap button padding, adjust if needed */
+    height: 38px; /* Example fixed height, adjust to match your design */
+    display: flex; /* Enable flex for inner content */
+    align-items: center; /* Vertically center icon and text */
+    justify-content: center; /* Horizontally center icon and text */
+    font-size: 1rem; /* Adjust font size */
+}
+
+/* Specific styling for the 'Add to Cart' button (left button) */
+.product-action .add-to-cart {
+    background-color: #1989AC; /* Use Bootstrap primary blue as default, or your specific color */
+    border-color: #1989AC;
+    color: #fff;
+    border-top-left-radius: 0.25rem; /* Standard Bootstrap small radius */
+    border-bottom-left-radius: 0.25rem; /* Standard Bootstrap small radius */
+    border-right: none; /* Remove the right border to merge with the next button */
+}
+
+/* Specific styling for the 'Customize' button (right button) */
+.product-action .customize-product {
+    background-color: #fff;
+    border-color: #1989AC; /* Use Bootstrap secondary border color, or your specific color */
+    color: #1989AC;
+    border-top-right-radius: 0.25rem; /* Standard Bootstrap small radius */
+    border-bottom-right-radius: 0.25rem; /* Standard Bootstrap small radius */
+    /* Re-add the border between them for the "line" effect */
+    border-left: 1px solid #6c757d; /* Creates the dividing line */
+}
+
+/* Hover effects for the buttons */
+.product-action .add-to-cart:hover {
+    background-color: #1989AC; /* Darker blue on hover */
+    border-color: #1989AC;
+    color: #fff;
+}
+
+.product-action .customize-product:hover {
+    background-color: #e2e6ea; /* Lighter grey on hover */
+    border-color:#1989AC;
+    color: #1989AC;
+}
+
+/* Margin for the icon inside the button */
+.product-action button i.mr-1 {
+    margin-right: 0.25rem; /* Standard Bootstrap spacing for mr-1 */
+}
+
+/*----------------------------*\
+	Store
+\*----------------------------*/
+
+.store-filter {
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+/*-- Store Sort --*/
+
+.store-sort {
+  display: inline-block;
+}
+
+.store-sort label {
+  font-weight: 500;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-right: 15px;
+}
+
+/*-- Store Grid --*/
+
+.store-grid {
+  float: right;
+}
+
+.store-grid li {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: #FFF;
+  border: 1px solid #E4E7ED;
+  text-align: center;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.store-grid li+li {
+  margin-left: 5px;
+}
+
+.store-grid li:hover {
+  background-color: #E4E7ED;
+  color: #1989AC;
+}
+
+.store-grid li.active {
+  background-color: #1989AC;
+  border-color: #1989AC;
+  color: #FFF;
+  cursor: default;
+}
+
+.store-grid li a {
+  display: block;
+}
+
+/*-- Store Pagination --*/
+
+.store-pagination {
+  float: right;
+}
+
+.store-pagination li {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #FFF;
+  border: 1px solid #E4E7ED;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.store-pagination li+li {
+  margin-left: 5px;
+}
+
+.store-pagination li:hover {
+  background-color: #E4E7ED;
+  color: #1989AC;
+}
+
+.store-pagination li.active {
+  background-color: #1989AC;
+  border-color: #1989AC;
+  color: #FFF;
+  font-weight: 500;
+  cursor: default;
+}
+
+.store-pagination li a {
+  display: block;
+}
+
+.store-qty {
+  margin-right: 30px;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+
+/* Products Custumization */
+
+/* Product Image Alignment */
+#product-main-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Ensure it takes full height of its parent */
+}
+
+#product-main-img .product-preview img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Product Details Section Alignment */
+.product-details {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.product-details h2.product-name {
+    color: #2B2D42;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.product-details .product-rating {
+    margin-bottom: 10px;
+}
+
+.product-details .product-price {
+    color: #030303;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.product-details .product-available {
+    color: #28a745;
+    font-weight: 600;
+    background-color: #d4edda;
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.product-options {
+    margin: 20px 0;
+}
+
+.product-options label {
+    display: inline-block;
+    margin-right: 20px;
+    font-weight: 600;
+}
+
+.add-to-cart {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.add-to-cart-btn {
+    background-color: #1989AC;
+    color: white;
+    border: none;
+    padding: 12px px;
+    border-radius: 0px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #156d8a;
+}
+
+.product-btns {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.product-btns li {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.product-btns a {
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.product-btns a:hover {
+    color: #1989AC;
+}
+
+.product-links {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+}
+
+.product-links li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.product-links li:first-child {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .product-details {
+        margin-top: 20px;
+    }
+    
+    #product-main-img {
+        margin-bottom: 20px;
+    }
+}
+
+/* costmization model */
+/* General Modal Styling */
+#customizeModal .modal-content {
+    border-radius: 10px; /* Slightly rounded corners for a modern feel */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* More subtle shadow */
+    overflow: hidden; /* Ensures rounded corners are applied to content */
+}
+
+#customizeModal .modal-header {
+    background-color: #f8f9fa; /* Light background for the header */
+    border-bottom: 1px solid #e9ecef; /* Subtle border */
+    padding: 20px 30px; /* More padding for better spacing */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#customizeModal .modal-title {
+    color: #343a40; /* Darker text for readability */
+    font-size: 1.5rem; /* Slightly larger title */
+    font-weight: 600; /* Semi-bold */
+}
+
+#customizeModal .modal-header .close {
+    font-size: 1.8rem; /* Larger close icon */
+    color: #6c757d; /* Muted color for the close icon */
+    opacity: 0.7;
+    transition: opacity 0.2s ease-in-out;
+}
+
+#customizeModal .modal-header .close:hover {
+    opacity: 1;
+    color: #495057;
+}
+
+#customizeModal .modal-body {
+    padding: 30px; /* Consistent padding */
+    background-color: #ffffff; /* White background for the body */
+}
+
+#customizeModal .modal-footer {
+    background-color: #f8f9fa; /* Light background for the footer */
+    border-top: 1px solid #e9ecef; /* Subtle border */
+    padding: 20px 30px; /* Consistent padding */
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    gap: 10px; /* Space between buttons */
+}
+
+/* Form Element Styling */
+#customizationForm .form-group {
+    margin-bottom: 20px; /* More space between form groups */
+}
+
+#customizationForm label {
+    font-weight: 500; /* Slightly bolder labels */
+    color: #495057; /* Darker color for labels */
+    margin-bottom: 8px; /* Space between label and input */
+    display: block; /* Ensures label takes its own line */
+}
+
+#customizationForm .form-control {
+    border: 1px solid #ced4da; /* Standard border color */
+    border-radius: 5px; /* Slightly rounded input fields */
+    padding: 10px 15px; /* Comfortable padding inside inputs */
+    font-size: 1rem; /* Standard font size */
+    color: #495057; /* Input text color */
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    width: 100%; /* Ensure inputs take full width of their column */
+}
+
+#customizationForm .form-control:focus {
+    border-color: #80bdff; /* Standard Bootstrap focus color */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Standard Bootstrap focus shadow */
+    outline: none; /* Remove default outline */
+}
+
+/* Specific input adjustments */
+#productQuantity {
+    width: 90px !important; /* Adjust width specifically for quantity, override inline style */
+    text-align: center; /* Center the quantity number */
+}
+
+#specialInstructions {
+    min-height: 100px; /* Give textarea a good minimum height */
+    resize: vertical; /* Allow only vertical resizing */
+}
+
+/* Required field indicator */
+.text-danger {
+    color: #dc3545; /* Standard Bootstrap danger red */
+    font-weight: normal; /* Keep asterisk normal weight */
+}
+
+/* Button Styling */
+#customizeModal .btn {
+    padding: 10px 25px; /* More padding for buttons */
+    border-radius: 5px; /* Rounded corners for buttons */
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+#customizeModal .btn-secondary {
+    background-color: #6c757d; /* Muted secondary color */
+    border-color: #6c757d;
+    color: #fff;
+}
+
+#customizeModal .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+#customizeModal .btn-primary {
+    background-color: #1989AC; /* Primary brand color */
+    border-color: #1989AC;
+    color: #fff;
+}
+
+#customizeModal .btn-primary:hover {
+    background-color: #1989AC;
+    border-color: #1989AC;
+}
+
+/* Adjustments for form-row alignment */
+/* This helps ensure proper spacing between the two columns in the first form-row */
+#customizationForm .form-row.justify-content-between.align-items-start {
+    margin-left: -15px; /* Counteract Bootstrap's default row padding */
+    margin-right: -15px; /* Counteract Bootstrap's default row padding */
+}
+
+#customizationForm .form-row.justify-content-between.align-items-start > .form-group {
+    padding-left: 15px; /* Add back padding to the columns */
+    padding-right: 15px; /* Add back padding to the columns */
+}
+/* In your CSS, locate or add these styles: */
+
+#customizeModal .modal-header .close {
+    font-size: 2rem; /* Increased from 1.8rem for a more prominent 'x' */
+    color: #6c757d; /* Muted color for the close icon */
+    opacity: 0.7;
+    transition: opacity 0.2s ease-in-out;
+    /* Add these to ensure proper alignment and clickable area */
+    padding: 0; /* Remove default padding that might misalign it */
+    margin: -1rem -1rem -1rem auto; /* Adjust margin to push it to the corner and offset default button padding */
+    background-color: transparent; /* Ensure no background interferes */
+    border: none; /* Remove any default button border */
+    line-height: 1; /* Helps vertical alignment of the 'x' */
+    font-weight: 300; /* Make the 'x' thinner for a sleeker look */
+}
+
+#customizeModal .modal-header .close:hover {
+    opacity: 1;
+    color: #495057;
+}
+
+/* Ensure the span within the close button is correctly sized and aligned */
+#customizeModal .modal-header .close span {
+    display: block; /* Make the span behave like a block element */
+    line-height: 1; /* Align the 'x' character vertically */
+}
+
+
+/* Responsive adjustments (optional but recommended) */
+@media (max-width: 767.98px) {
+    #customizeModal .modal-dialog {
+        margin: 1rem; /* Smaller margin on small screens */
+    }
+
+    #customizeModal .modal-header,
+    #customizeModal .modal-body,
+    #customizeModal .modal-footer {
+        padding: 20px; /* Slightly reduced padding on smaller screens */
+    }
+
+    #customizeModal .modal-title {
+        font-size: 1.3rem; /* Smaller title on small screens */
+    }
+
+    #customizationForm .form-row > div[class*="col-md-"] {
+        flex: 0 0 100%; /* Stack columns on small screens */
+        max-width: 100%;
+    }
+
+    #productQuantity {
+        width: 100% !important; /* Quantity takes full width on small screens */
+        text-align: left; /* Align left on small screens */
+    }
+}
+
+
+/* Reduce product card heights */
+.product {
+  max-height: 450px; /* Reduced from default height */
+  overflow: hidden;
+}
+
+.product .product-img {
+  height: 200px; /* Fixed height for product images */
+  overflow: hidden;
+}
+
+.product .product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures image covers the area without distortion */
+}
+
+.product .product-body {
+  padding: 10px 15px; /* Reduced padding */
+  min-height: 180px; /* Fixed minimum height for consistency */
+  max-height: 180px; /* Fixed maximum height */
+  overflow: hidden;
+}
+
+.product-specs {
+  margin-bottom: 8px !important; /* Reduced margin */
+  padding: 8px !important; /* Reduced padding */
+}
+
+.product-action {
+  margin-top: 5px; /* Reduced margin */
+  padding: 0 15px 10px 15px; /* Add padding to action area */
+}
+
+/* Ensure consistent button heights */
+.product-action .btn {
+  padding: 6px 12px; /* Reduced button padding */
+  font-size: 12px; /* Smaller font size */
+}
+
+
+/*----------------------------*\
+	Buttons
+\*----------------------------*/
+
+.primary-btn {
+  display: inline-block;
+  padding: 12px 30px;
+  background-color: #E8F1F5;
+  border: none;
+  border-radius: 40px;
+  color:black;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-align: center;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.primary-btn:hover, .primary-btn:focus {
+  opacity: 0.9;
+  color: #FFF;
+}
+
+/*----------------------------*\
+	Inputs
+\*----------------------------*/
+
+/*-- Text input --*/
+
+.input {
+  height: 40px;
+  padding: 0px 15px;
+  border: 1px solid #E8F1F5;
+  background-color: #E8F1F5;
+  width: 100%;
+}
+
+textarea.input {
+  padding: 15px;
+  min-height: 90px;
+}
+
+/*-- Number input --*/
+
+.input-number {
+  position: relative;
+}
+
+.input-number input[type="number"]::-webkit-inner-spin-button, .input-number input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-number input[type="number"] {
+  -moz-appearance: textfield;
+  height: 40px;
+  width: 100%;
+  border: 1px solid #E8F1F5;
+  background-color: #F8F8F8;
+  padding: 0px 35px 0px 15px;
+}
+
+.input-number .qty-up, .input-number .qty-down {
+  position: absolute;
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #D3D3D3;
+  background-color: #F8F8F8;
+  text-align: center;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.input-number .qty-up {
+  right: 0;
+  top: 0;
+  border-bottom: 0px;
+}
+
+.input-number .qty-down {
+  right: 0;
+  bottom: 0;
+}
+
+.input-number .qty-up:hover, .input-number .qty-down:hover {
+  background-color: #D3D3D3;
+  color: #1989AC;
+}
+
+/*-- Select input --*/
+
+
+
+
+/*-- checkbox & radio input --*/
+
+.input-radio, .input-checkbox {
+  position: relative;
+  display: block;
+}
+
+.input-radio input[type="radio"]:not(:checked), .input-radio input[type="radio"]:checked, .input-checkbox input[type="checkbox"]:not(:checked), .input-checkbox input[type="checkbox"]:checked {
+  position: absolute;
+  margin-left: -9999px;
+  visibility: hidden;
+}
+
+.input-radio label, .input-checkbox label {
+  font-weight: 500;
+  min-height: 20px;
+  padding-left: 20px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.input-radio input[type="radio"]+label span, .input-checkbox input[type="checkbox"]+label span {
+  position: absolute;
+  left: 0px;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #D3D3D3;
+  background: #F8F8F8;
+}
+
+.input-radio input[type="radio"]+label span {
+  border-radius: 50%;
+}
+
+.input-radio input[type="radio"]+label span:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%) scale(0);
+  -ms-transform: translate(-50%, -50%) scale(0);
+  transform: translate(-50%, -50%) scale(0);
+  background-color: #F8F8F8;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  opacity: 0;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.input-checkbox input[type="checkbox"]+label span:after {
+  content: '✔';
+  position: absolute;
+  top: -2px;
+  left: 1px;
+  font-size: 10px;
+  color: #F8F8F8;
+  opacity: 0;
+  -webkit-transform: scale(0);
+  -ms-transform: scale(0);
+  transform: scale(0);
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.input-radio input[type="radio"]:checked+label span, .input-checkbox input[type="checkbox"]:checked+label span {
+  background-color: #1989AC;
+  border-color: #1989AC;
+}
+
+.input-radio input[type="radio"]:checked+label span:after {
+  opacity: 1;
+  -webkit-transform: translate(-50%, -50%) scale(1);
+  -ms-transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.input-checkbox input[type="checkbox"]:checked+label span:after {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+}
+
+.input-radio .caption, .input-checkbox .caption {
+  margin-top: 5px;
+  max-height: 0;
+  overflow: hidden;
+  -webkit-transition: 0.3s max-height;
+  transition: 0.3s max-height;
+}
+
+.input-radio input[type="radio"]:checked~.caption, .input-checkbox input[type="checkbox"]:checked~.caption {
+  max-height: 800px;
+}
+
+/*----------------------------*\
+	Section
+\*----------------------------*/
+
+.section {
+  padding-top: 0px;
+  padding-bottom: 30px;
+}
+
+.section-title {
+  position: relative;
+  margin-bottom: 30px;
+  margin-top: 15px;
+}
+
+.section-title .title {
+  display: inline-block;
+  text-transform: uppercase;
+  margin: 0px;
+}
+
+.section-title .section-nav {
+  float: right;
+}
+
+.section-title .section-nav .section-tab-nav {
+  display: inline-block;
+}
+
+.section-tab-nav li {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.section-tab-nav li:last-child {
+  margin-right: 0px;
+}
+
+.section-tab-nav li a {
+  font-weight: 700;
+  color: #8D99AE;
+}
+
+.section-tab-nav li a:after {
+  content: "";
+  display: block;
+  width: 0%;
+  height: 2px;
+  background-color: #1989AC;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.section-tab-nav li.active a {
+  color: #1989AC;
+}
+
+.section-tab-nav li a:hover:after, .section-tab-nav li a:focus:after, .section-tab-nav li.active a:after {
+  width: 100%;
+}
+
+.section-title .section-nav .products-slick-nav {
+  top: 0px;
+  right: 0px;
+}
+
+.section .row {
+    max-width: 1400px; /* Or whatever maximum width you prefer, e.g., 1200px */
+    margin-left: auto;
+    margin-right: auto;
+    /* Also ensure no padding on the row itself if you want it to align with the max-width */
+    padding-left: 0;
+    padding-right: 0;
+}
+ 
+
+/* new one  */
+/* CSS to center the #store column and make it occupy space better */
+#store {
+    /* Make it take full width of its parent (which is now centered by justify-content-center) */
+    /* This will override the default Bootstrap column behavior slightly for centering */
+    width: 90%; /* Ensure it tries to take up its full allocated 9 columns within the parent row */
+    margin-left: auto; /* Centers the col-md-9 itself */
+    margin-right: auto; /* Centers the col-md-9 itself */
+    float: none; /* Important to remove any left/right floats that might prevent centering */
+}
+
+/* Optional: If you want the items *inside* #store to also be centered when not filling a row */
+/* This applies to the .row that holds your individual products */
+#store .row {
+    justify-content:baseline ;
+}
+
+/* Ensure the .product-action buttons match the image colors and style */
+.product-action .add-to-cart {
+    background-color: #007bff; /* Example: Bootstrap primary blue, adjust to your image's pinkish color */
+    border-color: #007bff;
+    color: #fff;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+    border-right: none;
+}
+
+.product-action .customize-product {
+    background-color: #fff;
+    border-color: #6c757d; /* Example: Bootstrap secondary border, adjust to your image's border color */
+    color: #343a40;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    border-left: 1px solid #6c757d;
+}
+
+.product-action .add-to-cart:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.product-action .customize-product:hover {
+    background-color: #e2e6ea;
+    border-color: #545b62;
+}
+/*----------------------------*\
+  Enhanced Breadcrumb (Arrow Style)
+\*----------------------------*/
+#breadcrumb {
+  padding: 10px;
+
+
+}
+
+.breadcrumb-nav {
+  display: flex;
+  justify-content: flex-start;
+  align-items: last baseline;
+   padding-top: 10px;
+  padding-bottom: 10px; /* ✅ increased bottom space */
+
+}
+
+.breadcrumb-tree {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 50px;
+  font-weight: 600;
+  text-transform: uppercase;
+font-family: 'Inter', sans-serif;
+  color: #333;
+
+}
+
+.breadcrumb-tree li {
+  display: flex;
+  align-items: center;
+  color: #1989AC;
+}
+
+
+
+.breadcrumb-tree li a {
+  color: #004ed4;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.breadcrumb-tree li a:hover {
+  color: #1989AC;
+  text-decoration: underline;
+}
+
+.breadcrumb-tree li a i {
+  margin-right: 6px;
+  font-size: 14px;
+  color: #1989AC;
+}
+
+.breadcrumb-tree li.active {
+  color: #1989AC;
+  font-weight: 700;
+}
+
+
+
+
+
+/*----------------------------*\
+	product
+\*----------------------------*/
+
+.product {
+  position: relative;
+  margin: 15px 0px;
+  -webkit-box-shadow: 0px 0px 0px 0px #E4E7ED, 0px 0px 0px 1px #E4E7ED;
+  box-shadow: 0px 0px 0px 0px #E4E7ED, 0px 0px 0px 1px #E4E7ED;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.product:hover {
+  -webkit-box-shadow: 0px 0px 6px 0px #E4E7ED, 0px 0px 0px 2px #1989AC;
+  box-shadow: 0px 0px 6px 0px #E4E7ED, 0px 0px 0px 2px #1989AC;
+}
+
+.product .product-img {
+  position: relative;
+}
+
+.product .product-img>img {
+  width: 100%;
+}
+
+.product .product-img .product-label {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.product .product-img .product-label>span {
+  border: 2px solid;
+  padding: 2px 10px;
+  font-size: 12px;
+}
+
+.product .product-img .product-label>span.sale {
+  background-color: #FFF;
+}
+
+.product .product-img .product-label>span.new {
+  background-color: #030303;
+  border-color: #030303;
+  color: #FFF;
+}
+
+.product .product-body {
+  position: relative;
+  padding: 15px;
+  background-color: #FFF;
+  text-align: center;
+  z-index: 20;
+  text-decoration: none;
+}
+
+.product .product-body .product-category {
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #8D99AE;
+}
+
+.product .product-body .product-name {
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.product .product-body .product-name>a {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.product .product-body .product-price {
+  color: #030303;
+  font-size: 18px;
+}
+
+.product .product-body .product-price .product-old-price {
+  font-size: 70%;
+  font-weight: 400;
+  color: #8D99AE;
+}
+
+.product .product-body .product-rating {
+  position: relative;
+  margin: 15px 0px 10px;
+  height: 20px;
+}
+
+.product .product-body .product-rating>i {
+  position: relative;
+  width: 14px;
+  margin-right: -4px;
+  background: #FFF;
+  color: #E4E7ED;
+  z-index: 10;
+}
+
+.product .product-body .product-rating>i.fa-star {
+  color: #1989AC;
+}
+
+.product .product-body .product-rating:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  height: 1px;
+  background-color: #E4E7ED;
+}
+
+.product .product-body .product-btns>button {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background: transparent;
+  border: none;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.product .product-body .product-btns>button:hover {
+  background-color: #E4E7ED;
+  color: #1989AC;
+  border-radius: 50%;
+}
+
+.product .product-body .product-btns>button .tooltipp {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -15px);
+  -ms-transform: translate(-50%, -15px);
+  transform: translate(-50%, -15px);
+  width: 150px;
+  padding: 10px;
+  font-size: 12px;
+  line-height: 10px;
+  background: #1e1f29;
+  color: #FFF;
+  text-transform: uppercase;
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.product .product-body .product-btns>button:hover .tooltipp {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transform: translate(-50%, -5px);
+  -ms-transform: translate(-50%, -5px);
+  transform: translate(-50%, -5px);
+}
+
+
+/* Grade and shape */
+ .product-action {
+    margin-top: 1px;
+}
+.justify-content-between {
+    justify-content: space-between !important;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+.d-flex {
+    display: flex !important
+;
+}
+
+   .form-control-sm {
+    height: calc(1.5em + 0.5rem + 2px);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #EDF1FF;
+    border-radius: 0;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.product-specs {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 10px;
+}
+.col-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+    font-weight: 500;
+    color: #000;
+}
+.text-center {
+    text-align: center !important;
+}
+
+
+/* store images and add to cart an costimze */
+
+
+/* --- Styles for Wishlist & Quick View Icons on Image Hover (Overlay) --- */
+.product-img {
+    position: relative; /* Essential for positioning children absolutely */
+    overflow: hidden;   /* Ensures nothing overflows */
+    text-align: center; /* Centers the image */
+}
+
+.product-img img {
+    max-width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Remove extra space below image */
+}
+
+/* Overlay container for wishlist/quick view buttons */
+.product-btns-overlay {
+    position: absolute;
+    top: 10px;   /* Position from the top edge */
+    right: 10px; /* Position from the right edge */
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 8px; /* Space between the two icons */
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Important for accessibility and clickability */
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition */
+    z-index: 2; /* Ensure buttons are above the image */
+}
+
+/* Show buttons on hover over the entire product-img area */
+.product-img:hover .product-btns-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Styling for the individual wishlist and quick view buttons */
+.product-btns-overlay button {
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    border: 1px solid #E4E7ED;
+    border-radius: 50%; /* Makes them circular */
+    width: 36px; /* Button size */
+    height: 36px; /* Button size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    padding: 0; /* Remove default button padding */
+    line-height: 1; /* Adjust line height to center icon */
+}
+
+.product-btns-overlay button i {
+    color: #1989AC; /* Icon color */
+    font-size: 16px; /* Icon size */
+}
+
+/* Hide the tooltip text that might be interfering */
+.product-btns-overlay button .tooltipp {
+    display: none; /* Hide the text, only show icon */
+}
+
+.product-btns-overlay button:hover {
+    background-color: #1989AC;
+    border-color: #1989AC;
+}
+
+.product-btns-overlay button:hover i {
+    color: #FFF;
+}
+
+
+/* --- Styles for No-Gap "Add to Cart" and "Customize" Buttons --- */
+.product-action {
+    display: flex; /* Already set by d-flex */
+    width: 100%; /* Ensure the container takes full width */
+    /* Remove any 'gap' property if you added it previously to product-action */
+}
+
+/* Make both buttons take equal space and remove default spacing/borders for merging */
+.product-action .add-to-cart,
+.product-action .customize-product {
+    flex-grow: 1; /* Both buttons will expand to fill the available width equally */
+    flex-basis: 0; /* Ensures they share space equally */
+    border-radius: 0; /* Remove default rounded corners */
+    margin: 0; /* Remove any default margins */
+    padding: 0.375rem 0.75rem; /* Standard Bootstrap button padding, adjust if needed */
+    height: 38px; /* Example fixed height, adjust to match your design */
+    display: flex; /* Enable flex for inner content */
+    align-items: center; /* Vertically center icon and text */
+    justify-content: center; /* Horizontally center icon and text */
+    font-size: 1rem; /* Adjust font size */
+}
+
+/* Specific styling for the 'Add to Cart' button (left button) */
+.product-action .add-to-cart {
+    background-color: #1989AC; /* Use Bootstrap primary blue as default, or your specific color */
+    border-color: #1989AC;
+    color: #fff;
+    border-top-left-radius: 0.25rem; /* Standard Bootstrap small radius */
+    border-bottom-left-radius: 0.25rem; /* Standard Bootstrap small radius */
+    border-right: none; /* Remove the right border to merge with the next button */
+}
+
+/* Specific styling for the 'Customize' button (right button) */
+.product-action .customize-product {
+    background-color: #fff;
+    border-color: #1989AC; /* Use Bootstrap secondary border color, or your specific color */
+    color: #1989AC;
+    border-top-right-radius: 0.25rem; /* Standard Bootstrap small radius */
+    border-bottom-right-radius: 0.25rem; /* Standard Bootstrap small radius */
+    /* Re-add the border between them for the "line" effect */
+    border-left: 1px solid #6c757d; /* Creates the dividing line */
+}
+
+/* Hover effects for the buttons */
+.product-action .add-to-cart:hover {
+    background-color: #1989AC; /* Darker blue on hover */
+    border-color: #1989AC;
+    color: #fff;
+}
+
+.product-action .customize-product:hover {
+    background-color: #e2e6ea; /* Lighter grey on hover */
+    border-color:#1989AC;
+    color: #1989AC;
+}
+
+/* Margin for the icon inside the button */
+.product-action button i.mr-1 {
+    margin-right: 0.25rem; /* Standard Bootstrap spacing for mr-1 */
+}
+
+/*----------------------------*\
+	Store
+\*----------------------------*/
+
+.store-filter {
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+/*-- Store Sort --*/
+
+.store-sort {
+  display: inline-block;
+}
+
+.store-sort label {
+  font-weight: 500;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-right: 15px;
+}
+
+/*-- Store Grid --*/
+
+.store-grid {
+  float: right;
+}
+
+.store-grid li {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: #FFF;
+  border: 1px solid #E4E7ED;
+  text-align: center;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.store-grid li+li {
+  margin-left: 5px;
+}
+
+.store-grid li:hover {
+  background-color: #E4E7ED;
+  color: #1989AC;
+}
+
+.store-grid li.active {
+  background-color: #1989AC;
+  border-color: #1989AC;
+  color: #FFF;
+  cursor: default;
+}
+
+.store-grid li a {
+  display: block;
+}
+
+/*-- Store Pagination --*/
+
+.store-pagination {
+  float: right;
+}
+
+.store-pagination li {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #FFF;
+  border: 1px solid #E4E7ED;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.store-pagination li+li {
+  margin-left: 5px;
+}
+
+.store-pagination li:hover {
+  background-color: #E4E7ED;
+  color: #1989AC;
+}
+
+.store-pagination li.active {
+  background-color: #1989AC;
+  border-color: #1989AC;
+  color: #FFF;
+  font-weight: 500;
+  cursor: default;
+}
+
+.store-pagination li a {
+  display: block;
+}
+
+.store-qty {
+  margin-right: 30px;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+
+/* Products Custumization */
+
+/* Product Image Alignment */
+#product-main-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Ensure it takes full height of its parent */
+}
+
+#product-main-img .product-preview img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Product Details Section Alignment */
+.product-details {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.product-details h2.product-name {
+    color: #1989AC;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.product-details .product-rating {
+    margin-bottom: 10px;
+}
+
+.product-details .product-price {
+    color: #1989AC;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.product-details .product-available {
+    color: #28a745;
+    font-weight: 600;
+    background-color: #d4edda;
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.product-options {
+    margin: 20px 0;
+}
+
+.product-options label {
+    display: inline-block;
+    margin-right: 20px;
+    font-weight: 600;
+}
+
+.add-to-cart {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.add-to-cart-btn {
+    background-color: #1989AC;
+    color: white;
+    border: none;
+    padding: 12px px;
+    border-radius: 0px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #156d8a;
+}
+
+.product-btns {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.product-btns li {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.product-btns a {
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.product-btns a:hover {
+    color: #1989AC;
+}
+
+.product-links {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+}
+
+.product-links li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.product-links li:first-child {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .product-details {
+        margin-top: 20px;
+    }
+    
+    #product-main-img {
+        margin-bottom: 20px;
+    }
+}
+
+/* costmization model */
+/* General Modal Styling */
+#customizeModal .modal-content {
+    border-radius: 10px; /* Slightly rounded corners for a modern feel */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* More subtle shadow */
+    overflow: hidden; /* Ensures rounded corners are applied to content */
+}
+
+#customizeModal .modal-header {
+    background-color: #f8f9fa; /* Light background for the header */
+    border-bottom: 1px solid #e9ecef; /* Subtle border */
+    padding: 20px 30px; /* More padding for better spacing */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#customizeModal .modal-title {
+    color: #343a40; /* Darker text for readability */
+    font-size: 1.5rem; /* Slightly larger title */
+    font-weight: 600; /* Semi-bold */
+}
+
+#customizeModal .modal-header .close {
+    font-size: 1.8rem; /* Larger close icon */
+    color: #6c757d; /* Muted color for the close icon */
+    opacity: 0.7;
+    transition: opacity 0.2s ease-in-out;
+}
+
+#customizeModal .modal-header .close:hover {
+    opacity: 1;
+    color: #495057;
+}
+
+#customizeModal .modal-body {
+    padding: 30px; /* Consistent padding */
+    background-color: #ffffff; /* White background for the body */
+}
+
+#customizeModal .modal-footer {
+    background-color: #f8f9fa; /* Light background for the footer */
+    border-top: 1px solid #e9ecef; /* Subtle border */
+    padding: 20px 30px; /* Consistent padding */
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    gap: 10px; /* Space between buttons */
+}
+
+/* Form Element Styling */
+#customizationForm .form-group {
+    margin-bottom: 20px; /* More space between form groups */
+}
+
+#customizationForm label {
+    font-weight: 500; /* Slightly bolder labels */
+    color: #495057; /* Darker color for labels */
+    margin-bottom: 8px; /* Space between label and input */
+    display: block; /* Ensures label takes its own line */
+}
+
+#customizationForm .form-control {
+    border: 1px solid #ced4da; /* Standard border color */
+    border-radius: 5px; /* Slightly rounded input fields */
+    padding: 10px 15px; /* Comfortable padding inside inputs */
+    font-size: 1rem; /* Standard font size */
+    color: #495057; /* Input text color */
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    width: 100%; /* Ensure inputs take full width of their column */
+}
+
+#customizationForm .form-control:focus {
+    border-color: #80bdff; /* Standard Bootstrap focus color */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Standard Bootstrap focus shadow */
+    outline: none; /* Remove default outline */
+}
+
+/* Specific input adjustments */
+#productQuantity {
+    width: 90px !important; /* Adjust width specifically for quantity, override inline style */
+    text-align: center; /* Center the quantity number */
+}
+
+#specialInstructions {
+    min-height: 100px; /* Give textarea a good minimum height */
+    resize: vertical; /* Allow only vertical resizing */
+}
+
+/* Required field indicator */
+.text-danger {
+    color: #dc3545; /* Standard Bootstrap danger red */
+    font-weight: normal; /* Keep asterisk normal weight */
+}
+
+/* Button Styling */
+#customizeModal .btn {
+    padding: 10px 25px; /* More padding for buttons */
+    border-radius: 5px; /* Rounded corners for buttons */
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+#customizeModal .btn-secondary {
+    background-color: #6c757d; /* Muted secondary color */
+    border-color: #6c757d;
+    color: #fff;
+}
+
+#customizeModal .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+#customizeModal .btn-primary {
+    background-color: #1989AC; /* Primary brand color */
+    border-color: #1989AC;
+    color: #fff;
+}
+
+#customizeModal .btn-primary:hover {
+    background-color: #1989AC;
+    border-color: #1989AC;
+}
+
+/* Adjustments for form-row alignment */
+/* This helps ensure proper spacing between the two columns in the first form-row */
+#customizationForm .form-row.justify-content-between.align-items-start {
+    margin-left: -15px; /* Counteract Bootstrap's default row padding */
+    margin-right: -15px; /* Counteract Bootstrap's default row padding */
+}
+
+#customizationForm .form-row.justify-content-between.align-items-start > .form-group {
+    padding-left: 15px; /* Add back padding to the columns */
+    padding-right: 15px; /* Add back padding to the columns */
+}
+/* In your CSS, locate or add these styles: */
+
+#customizeModal .modal-header .close {
+    font-size: 2rem; /* Increased from 1.8rem for a more prominent 'x' */
+    color: #6c757d; /* Muted color for the close icon */
+    opacity: 0.7;
+    transition: opacity 0.2s ease-in-out;
+    /* Add these to ensure proper alignment and clickable area */
+    padding: 0; /* Remove default padding that might misalign it */
+    margin: -1rem -1rem -1rem auto; /* Adjust margin to push it to the corner and offset default button padding */
+    background-color: transparent; /* Ensure no background interferes */
+    border: none; /* Remove any default button border */
+    line-height: 1; /* Helps vertical alignment of the 'x' */
+    font-weight: 300; /* Make the 'x' thinner for a sleeker look */
+}
+
+#customizeModal .modal-header .close:hover {
+    opacity: 1;
+    color: #495057;
+}
+
+/* Ensure the span within the close button is correctly sized and aligned */
+#customizeModal .modal-header .close span {
+    display: block; /* Make the span behave like a block element */
+    line-height: 1; /* Align the 'x' character vertically */
+}
+
+
+/* Responsive adjustments (optional but recommended) */
+@media (max-width: 767.98px) {
+    #customizeModal .modal-dialog {
+        margin: 1rem; /* Smaller margin on small screens */
+    }
+
+    #customizeModal .modal-header,
+    #customizeModal .modal-body,
+    #customizeModal .modal-footer {
+        padding: 20px; /* Slightly reduced padding on smaller screens */
+    }
+
+    #customizeModal .modal-title {
+        font-size: 1.3rem; /* Smaller title on small screens */
+    }
+
+    #customizationForm .form-row > div[class*="col-md-"] {
+        flex: 0 0 100%; /* Stack columns on small screens */
+        max-width: 100%;
+    }
+
+    #productQuantity {
+        width: 100% !important; /* Quantity takes full width on small screens */
+        text-align: left; /* Align left on small screens */
+    }
+}
+
+
+/* Reduce product card heights */
+.product {
+  max-height: 450px; /* Reduced from default height */
+  overflow: hidden;
+}
+
+.product .product-img {
+  height: 200px; /* Fixed height for product images */
+  overflow: hidden;
+}
+
+.product .product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures image covers the area without distortion */
+}
+
+.product .product-body {
+  padding: 10px 15px; /* Reduced padding */
+  min-height: 180px; /* Fixed minimum height for consistency */
+  max-height: 180px; /* Fixed maximum height */
+  overflow: hidden;
+}
+
+.product-specs {
+  margin-bottom: 8px !important; /* Reduced margin */
+  padding: 8px !important; /* Reduced padding */
+}
+
+.product-action {
+  margin-top: 5px; /* Reduced margin */
+  padding: 0 15px 10px 15px; /* Add padding to action area */
+}
+
+/* Ensure consistent button heights */
+.product-action .btn {
+  padding: 6px 12px; /* Reduced button padding */
+  font-size: 12px; /* Smaller font size */
+}
+
+
+/* Cart Modal Styles */
+.cart-summary {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    position: sticky;
+    top: 20px;
+}
+
+.btn-checkout {
+    background-color: #1989AC;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.btn-checkout:hover {
+    background-color: #156d8a;
+    color: white;
+}
+
+.cart-item {
+    border: 1px solid #e9ecef;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: white;
+}
+
+.cart-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-controls button {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 3px;
+}
+
+.quantity-controls input {
+    width: 60px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+#modal-cart-items-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+</style>
+    </head>
+	<body>
+		<!-- HEADER -->
+         	<div id="header-placeholder"></div>
+		<!-- /NAVIGATION -->
+
+		<!-- BREADCRUMB -->
+	<div id="breadcrumb" class="section">
+    <div class="container">
+        <nav class="breadcrumb-nav" aria-label="breadcrumb">
+            <ul class="breadcrumb-tree">
+                <li><a href="index.html"><i class="fa fa-home"></i> Home</a></li>
+                <li class="active">Ceramics</li>
+            </ul>
+        </nav>  
+    </div>
+		<!-- /BREADCRUMB -->
+
+<!-- SatCom Products -->
+        <!-- SECTION -->
+		<div class="section">
+			<!-- container -->
+			<div class="container-fluid">
+				<!-- row -->
+				<div class="row justify-content-center">
+					<!-- STORE -->
+					<div id="store" class="col-md-9">
+											<!-- store products -->
+						<div class="row">
+							<!-- Product 1 -->
+							<div class="col-md-3 col-xs-6">
+								<div class="product" data-product-id="aluminium" data-product-name="Aluminium" data-product-price="980.00" data-product-image="./img/alluminum.jfif">
+					
+										<div class="product-img">
+										<img src="./img/alumina1.jpeg" alt="">
+										<div class="product-label"></div>
+										<div class="product-btns-overlay">
+											<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button></a>
+										</div>
+									</div>
+									</a>
+
+									<div class="product-body">
+										<p class="product-category">Ceramics</p>
+										<h3 class="product-name">Alumina Ceramics</h3>
+										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+										<div class="product-specs mb-2">
+											
+										</div>
+									</div>
+
+									<div class="product-action d-flex">
+										<button class="btn btn-primary add-to-cart-btn" onclick="handleAddToCart(this)">
+											<i class="fa fa-shopping-cart mr-1"></i>Add to Cart
+										</button>
+										<button class="btn btn-outline-dark" id="customizeAluminium">
+											<i class="fa fa-cog mr-1"></i>Customize
+											</button>
+									</div>
+								</div>
+							</div>
+
+							<!-- Product 2 -->
+							<div class="col-md-3 col-xs-6">
+								<div class="product" data-product-id="aluminium" data-product-name="Aluminium" data-product-price="980.00" data-product-image="./img/alluminum.jfif">
+					
+										<div class="product-img">
+										<img src="./img/carbide1.jpeg" alt="">
+										<div class="product-label"></div>
+										<div class="product-btns-overlay">
+											<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button></a>
+										</div>
+									</div>
+									</a>
+
+									<div class="product-body">
+										<p class="product-category">Ceramics</p>
+										<h3 class="product-name">Silicon Carbide Ceramics</h3>
+										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+										<div class="product-specs mb-2">
+											
+										</div>
+									</div>
+
+									<div class="product-action d-flex">
+										<button class="btn btn-primary add-to-cart-btn" onclick="handleAddToCart(this)">
+											<i class="fa fa-shopping-cart mr-1"></i>Add to Cart
+										</button>
+										<button class="btn btn-outline-dark" id="customizeSic">
+											<i class="fa fa-cog mr-1"></i>Customize
+											</button>
+									</div>
+								</div>
+							</div>
+							<!-- Product 3 -->
+						<div class="col-md-3 col-xs-6">
+  <div class="product" style="opacity: 0.88; position: relative; border-radius: 10px; overflow: hidden;">
+
+    <!-- Product Image with Overlay -->
+    <div class="product-img position-relative" style="position: relative;">
+      <img src="./img/Zirconia1.jpg" alt="Zirconia Ceramics" style="width: 100%; height: auto; border-radius: 10px; filter: brightness(0.85);">
+
+      <!-- COMING SOON Animated Overlay -->
+      <div style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        animation: fadeZoom 2.5s ease-in-out infinite;
+        border-radius: 10px;
+      ">
+        <div style="font-size: 22px; font-weight: bold; color: #000;">
+          COMING SOON
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="product-body">
+      <p class="product-category">Ceramics</p>
+      <h3 class="product-name">Zirconia Ceramics</h3>
+      <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+    </div>
+
+    <!-- Disabled Buttons -->
+    <div class="product-action d-flex justify-content-between" style="gap: 10px;">
+      <button class="btn btn-primary flex-fill" disabled>
+        <i class="fa fa-shopping-cart mr-1"></i> Add to Cart
+      </button>
+      <button class="btn btn-outline-dark flex-fill" disabled>
+        <i class="fa fa-cog mr-1"></i> Customize
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Fade Zoom Animation + Styles -->
+<style>
+  @keyframes fadeZoom {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scale(1.08);
+      opacity: 1;
+    }
+  }
+
+  .product-body {
+    padding-top: 10px;
+  }
+
+  .product-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1989AC;
+  }
+
+  .product-category {
+    font-size: 14px;
+    color: #999;
+  }
+
+  .product-price {
+    font-size: 18px;
+    color: #000;
+  }
+
+  .product-old-price {
+    color: #bbb;
+    font-size: 14px;
+    margin-left: 5px;
+  }
+
+  .product-action .btn:disabled {
+    font-weight: bold;
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+</style>
+
+<!-- Raw Materials products -->
+
+		<!-- Customize Product Modal -->
+	<!-- Updated Customize Modal for Product 1 with Separate Fields -->
+<div class="modal fade" id="customizeModal" tabindex="-1" role="dialog" aria-labelledby="customizeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customizeModalLabel">Customize Alumina Ceramic Product</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form id="customizeForm">
+          <div class="row">
+
+            <!-- Product Type -->
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Select Alumina Ceramic Type <span class="text-danger">*</span></label>
+                <select class="form-control" id="aluminaType" onchange="updateFields()" required>
+                  <option value="">-- Select --</option>
+                  <option>Alumina Ceramic Disc</option>
+                  <option>Alumina Ceramic Insulator</option>
+                  <option>Alumina Ceramic Plate</option>
+                  <option>Alumina Ceramic Ring</option>
+                  <option>Alumina Ceramic Rod</option>
+                  <option>Alumina Ceramic Tube</option>
+                  <option>Alumina Ceramic Washer</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Separate Fields -->
+            <div class="col-md-6">
+              <label>Material</label>
+              <input type="text" id="material" class="form-control" readonly>
+            </div>
+            <div class="col-md-6">
+              <label>Outer Diameter</label>
+              <input type="text" id="outerDiameter" class="form-control" readonly>
+            </div>
+            <div class="col-md-6 mt-2">
+              <label>Wall Thickness</label>
+              <input type="text" id="wallThickness" class="form-control" readonly>
+            </div>
+            <div class="col-md-6 mt-2">
+              <label>Length</label>
+              <input type="text" id="length" class="form-control" readonly>
+            </div>
+            <div class="col-md-6 mt-2">
+              <label>Thickness</label>
+              <input type="text" id="thickness" class="form-control" readonly>
+            </div>
+            <div class="col-md-6 mt-2">
+              <label>Tolerance</label>
+              <input type="text" id="tolerance" class="form-control" readonly>
+            </div>
+            <div class="col-md-12 mt-2">
+              <label>Forming</label>
+              <textarea id="forming" class="form-control" readonly></textarea>
+            </div>
+            <div class="col-md-12 mt-2">
+              <label>Processing</label>
+              <textarea id="processing" class="form-control" readonly></textarea>
+            </div>
+
+          </div>
+        </form>
+      </div>
+
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                              <button type="button" class="btn btn-primary" id="addToCartCustom">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- JavaScript: Separate Fields Auto-Fill -->
+<script>
+  const aluminaData = {
+    "Alumina Ceramic Disc": {
+      material: "Alumina 99.5%, 99%",
+      outerDiameter: "Up to 800mm",
+      wallThickness: "—",
+      length: "—",
+      thickness: "Down to 0.5mm",
+      tolerance: "±0.001mm",
+      forming: "Dry-pressing, Isostatic-pressing",
+      processing: "CNC machining, fine grinding"
+    },
+    "Alumina Ceramic Insulator": {
+      material: "Alumina 99.5%, 99.8%, 99%",
+      outerDiameter: "—",
+      wallThickness: "—",
+      length: "—",
+      thickness: "—",
+      tolerance: "±0.001mm",
+      forming: "Dry-pressing, Isostatic-pressing",
+      processing: "CNC machining with fine grinding"
+    },
+    "Alumina Ceramic Plate": {
+      material: "Alumina 99%",
+      outerDiameter: "Up to 800mm",
+      wallThickness: "—",
+      length: "Up to 800mm",
+      thickness: "Down to 0.5mm",
+      tolerance: "±0.001mm",
+      forming: "Dry-pressing, Isostatic-pressing",
+      processing: "CNC machining with fine grinding"
+    },
+    "Alumina Ceramic Ring": {
+      material: "Alumina 99.5%, 99.8%",
+      outerDiameter: "Up to 800mm",
+      wallThickness: "Down to 1mm",
+      length: "—",
+      thickness: "—",
+      tolerance: "±0.001mm",
+      forming: "Isostatic-pressing",
+      processing: "CNC machining with fine grinding"
+    },
+    "Alumina Ceramic Rod": {
+      material: "Alumina 99.5%, 99%",
+      outerDiameter: "Up to 250mm",
+      wallThickness: "—",
+      length: "Up to 3500mm",
+      thickness: "—",
+      tolerance: "±0.05mm",
+      forming: "Dry-pressing, Isostatic-pressing",
+      processing: "CNC machining with fine grinding"
+    },
+    "Alumina Ceramic Tube": {
+      material: "Alumina 99.5%, 99.8%, 99%",
+      outerDiameter: "Up to 250mm",
+      wallThickness: "Down to 1mm",
+      length: "Up to 3500mm",
+      thickness: "—",
+      tolerance: "±0.05mm",
+      forming: "Extrusion, Casting",
+      processing: "Fine grinding"
+    },
+    "Alumina Ceramic Washer": {
+      material: "Alumina 99%",
+      outerDiameter: "Up to 250mm",
+      wallThickness: "Down to 1mm",
+      length: "—",
+      thickness: "—",
+      tolerance: "±0.001mm",
+      forming: "Dry-pressing, Isostatic-pressing",
+      processing: "CNC machining with fine grinding"
+    }
+  };
+
+  function updateFields() {
+    const type = document.getElementById("aluminaType").value;
+    const data = aluminaData[type] || {};
+
+    document.getElementById("material").value = data.material || "";
+    document.getElementById("outerDiameter").value = data.outerDiameter || "";
+    document.getElementById("wallThickness").value = data.wallThickness || "";
+    document.getElementById("length").value = data.length || "";
+    document.getElementById("thickness").value = data.thickness || "";
+    document.getElementById("tolerance").value = data.tolerance || "";
+    document.getElementById("forming").value = data.forming || "";
+    document.getElementById("processing").value = data.processing || "";
+  }
+
+  // Limit to Product 1 only
+  document.addEventListener("DOMContentLoaded", function () {
+    const product1 = document.querySelector('[data-product-id="aluminium"]');
+    if (product1) {
+      const customizeBtn = product1.querySelector(".customize-product");
+      if (customizeBtn) {
+        customizeBtn.addEventListener("click", function () {
+          document.getElementById("aluminaType").value = "";
+          updateFields();
+        });
+      }
+    }
+  });
+</script>
+</div>	
+		<!-- FOOTER -->
+<div id="footer-placeholder"></div>
+		<!-- /FOOTER -->
+
+		<!-- jQuery Plugins -->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/slick.min.js"></script>
+		<script src="js/nouislider.min.js"></script>
+		<script src="js/jquery.zoom.min.js"></script>
+		<script src="js/main1.js"></script>
+    	<script src="js/navigation.js"></script>
+		<script src="js/profileBehviour.js"></script>
+
+		<!-- This script block replicates the header loading logic from your index.html -->
+		<script>
+			$(function () {
+				// Step 1: Load the header
+				$("#header-placeholder").load("header.html", function () {
+					console.log("✅ header.html loaded");
+
+					// Step 2: Load frontend-header logic
+					// frontend-header.js contains updateProfileDisplay and loadFrontendCategories
+					const headerScript = document.createElement('script');
+					headerScript.src = 'js/frontend-header.js?t=' + new Date().getTime(); // prevent cache
+					headerScript.onload = () => {
+						if (typeof loadFrontendCategories === "function") {
+							loadFrontendCategories();
+						}
+						if (typeof updateProfileDisplay === "function") {
+							updateProfileDisplay();
+						}
+					};
+					document.body.appendChild(headerScript);
+
+					// Utility function to wait for an element to exist
+					function waitForElement(selector, callback) {
+						const checkExist = setInterval(() => {
+							const el = document.querySelector(selector);
+							if (el) {
+								clearInterval(checkExist);
+								callback(el);
+							}
+						}, 100);
+					}
+});
+				});
+			
+		</script>
+
+        <script>
+  $(function () {
+    $("#footer-placeholder").load("footer.html", function () {
+      console.log("✅ footer.html loaded");
+    });
+  });
+</script>
+   <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const customizeBtn = document.getElementById("customizeAluminium");
+    if (customizeBtn) {
+      customizeBtn.addEventListener("click", function () {
+        // Clear selection and update fields
+        document.getElementById("aluminaType").value = "";
+        updateFields(); // Call your existing function to reset fields
+        // Open modal ONLY for Product 1
+        $('#customizeModal').modal('show');
+      });
+    }
+  });
+</script>
+     <!-- ✅ Updated Customize Modal for Product 2 (Silicon Carbide Ceramics) -->
+<div class="modal fade" id="customizeModal2" tabindex="-1" role="dialog" aria-labelledby="customizeModalLabel2" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customizeModalLabel2">Customize Silicon Carbide Product</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="customizeForm2">
+          <div class="row">
+            <!-- Product Type Selection -->
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="sicType">Select Silicon Carbide Type <span class="text-danger">*</span></label>
+                <select class="form-control" id="sicType" onchange="updateSicDescription()" required>
+                  <option value="">-- Select --</option>
+                  <option>Silicon Carbide Plate</option>
+                  <option>Silicon Carbide Tube</option>
+                  <option>Silicon Carbide Wafer</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Auto Description Fields -->
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Material</label>
+                <input type="text" class="form-control" id="sicMaterial" readonly />
+              </div>
+              <div class="form-group">
+                <label>Length</label>
+                <input type="text" class="form-control" id="sicLength" readonly />
+              </div>
+              <div class="form-group">
+                <label>Width / Outer Diameter</label>
+                <input type="text" class="form-control" id="sicWidth" readonly />
+              </div>
+              <div class="form-group">
+                <label>Thickness</label>
+                <input type="text" class="form-control" id="sicThickness" readonly />
+              </div>
+              <div class="form-group">
+                <label>Forming</label>
+                <input type="text" class="form-control" id="sicForming" readonly />
+              </div>
+              <div class="form-group">
+                <label>Processing</label>
+                <input type="text" class="form-control" id="sicProcessing" readonly />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="addToCartCustom2">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const sicData = {
+    "Silicon Carbide Plate": {
+      material: "RBSiC/SiSiC",
+      length: "Up to 2000mm",
+      width: "Up to 800mm",
+      thickness: "Down to 0.5mm",
+      forming: "Dry-pressing, Isostatic-pressing",
+      processing: "Reaction Bonded"
+    },
+    "Silicon Carbide Tube": {
+      material: "RBSiC/SiSiC/SSiC",
+      length: "Up to 2000mm",
+      width: "Up to 800mm",
+      thickness: "Down to 5mm",
+      forming: "Dry-pressing, Isostatic-pressing",
+      processing: "Reaction Bonded / Pressureless"
+    },
+    "Silicon Carbide Wafer": {
+      material: "SSiC",
+      length: "--",
+      width: "Up to 800mm",
+      thickness: "Down to 0.5mm or 1mm",
+      forming: "Dry-pressing, Isostatic-pressing",
+      processing: "RBSiC / SSiC / SiSiC, Reaction Bonded / Pressureless"
+    }
+  };
+
+  function updateSicDescription() {
+    const type = document.getElementById("sicType").value;
+    const data = sicData[type] || {};
+    document.getElementById("sicMaterial").value = data.material || "";
+    document.getElementById("sicLength").value = data.length || "";
+    document.getElementById("sicWidth").value = data.width || "";
+    document.getElementById("sicThickness").value = data.thickness || "";
+    document.getElementById("sicForming").value = data.forming || "";
+    document.getElementById("sicProcessing").value = data.processing || "";
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const customizeBtn2 = document.getElementById("customizeSic");
+    if (customizeBtn2) {
+      customizeBtn2.addEventListener("click", function () {
+        document.getElementById("sicType").value = "";
+        updateSicDescription();
+        $('#customizeModal2').modal('show');
+      });
+    }
+  });
+</script>
+
+
+	</body>
+</html>

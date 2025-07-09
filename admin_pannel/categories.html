@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories | E-commerce Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="sidebar-placeholder"></div>
+    
+    <div class="main">
+        <div id="top-navbar-placeholder"></div>
+        
+        <div class="content">
+            <div class="page-header">
+                <h2>Categories Management</h2>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#addCategoryModal">
+                    <i class="fas fa-plus"></i> Add Category
+                </button>
+            </div>
+            
+            <div id="alertContainer"></div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3>All Categories</h3>
+                </div>
+                <div class="table-responsive">
+                    <table id="categoriesTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Slug</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="addCategoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Category</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="addCategoryForm">
+                    <div class="form-group">
+                        <label for="categoryName">Category Name</label>
+                        <input type="text" id="categoryName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="categorySlug">Slug</label>
+                        <input type="text" id="categorySlug" class="form-control"> </div>
+                    <div class="form-group">
+                        <label for="categoryDescription">Description</label>
+                        <textarea id="categoryDescription" class="form-control" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryStatus">Status</label>
+                        <select id="categoryStatus" class="form-control">
+                            <option value="Active">Active</option>   <option value="Inactive">Inactive</option> </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" onclick="document.getElementById('addCategoryModal').style.display='none'">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveCategoryBtn">Save Category</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="editCategoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Category</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editCategoryForm">
+                    <input type="hidden" id="editCategoryId">
+                    <div class="form-group">
+                        <label for="editCategoryName">Category Name</label>
+                        <input type="text" id="editCategoryName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCategorySlug">Slug</label>
+                        <input type="text" id="editCategorySlug" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCategoryDescription">Description</label>
+                        <textarea id="editCategoryDescription" class="form-control" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCategoryStatus">Status</label>
+                        <select id="editCategoryStatus" class="form-control">
+                            <option value="Active">Active</option>   <option value="Inactive">Inactive</option> </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" onclick="document.getElementById('editCategoryModal').style.display='none'">Cancel</button>
+                <button type="button" class="btn btn-primary" id="updateCategoryBtn">Update Category</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/categories.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/topnav.js"></script>
+</body>
+</html>

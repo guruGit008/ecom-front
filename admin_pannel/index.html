@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | E-commerce Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div id="sidebar-placeholder"></div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <!-- Top Navigation -->
+    <div id="top-navbar-placeholder"></div>
+
+    <!-- Content Area -->
+    <div class="content">
+      <div class="page-header">
+        <h2>Dashboard Overview</h2>
+        <button class="btn btn-primary">Generate Report</button>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats" id="statsContainer"></div>
+
+      <!-- Recent Orders -->
+      <div class="card">
+        <div class="card-header">
+          <h3>Recent Orders</h3>
+          <a href="orders.html" class="btn btn-outline-primary">
+            <i class="fas fa-eye"></i> View All
+          </a>
+        </div>
+        <div class="table-responsive">
+          <table id="recentOrders"></table>
+        </div>
+      </div>
+
+      <!-- Popular Products -->
+      <div class="card">
+        <div class="card-header">
+          <h3>Popular Products</h3>
+          <a href="products.html" class="btn btn-outline-primary">
+            <i class="fas fa-eye"></i> View All
+          </a>
+        </div>
+        <div class="table-responsive">
+          <table id="popularProducts"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript files -->
+  <script src="js/main.js"></script>
+  <script src="js/sidebar.js"></script>
+  <script src="js/topnav.js"></script>
+
+  <script>
+    // Helpers
+    function formatDate(dateString) {
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString('en-US', options);
+    }
+
+    function formatCurrency(amount) {
+      return '$' + amount.toFixed(2);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const orders = JSON.parse(localStorage.getItem('ecommerceOrders') || '[]');
+      const products = JSON.parse(localStorage.getItem('ecommerceProducts') || '[]');
+      const customers = JSON.parse(localStorage.getItem('ecommerceCustomers') || '[]');
+
+      // Calculate total revenue
+      const totalRevenue = orders.reduce((sum, order) => sum + order.amount, 0);
+
+      // Calculate monthly revenue (last 30 days)
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      const monthlyRevenue = orders
+        .filter(order => new Date(order.date) >= thirtyDaysAgo)
+        .reduce((sum, order) => sum + order.amount, 0);
+
+      // Products sold
+      const productsSold = products.reduce((sum, product) => sum + product.sales, 0);
+
+      // Render stats
+      document.getElementById('statsContainer').innerHTML = `
+        <div class="stat-card">
+          <h3>Total Revenue</h3>
+          <div class="value">${formatCurrency(totalRevenue)}</div>
+          <div class="change up">
+            <i class="fas fa-arrow-up"></i> ${(monthlyRevenue / totalRevenue * 100).toFixed(1)}% from last month
+          </div>
+        </div>
+        <div class="stat-card">
+          <h3>Total Orders</h3>
+          <div class="value">${orders.length}</div>
+          <div class="change up">
+            <i class="fas fa-arrow-up"></i> 8.3% from last month
+          </div>
+        </div>
+        <div class="stat-card">
+          <h3>Products Sold</h3>
+          <div class="value">${productsSold}</div>
+          <div class="change down">
+            <i class="fas fa-arrow-down"></i> 2.1% from last month
+          </div>
+        </div>
+        <div class="stat-card">
+          <h3>Active Customers</h3>
+          <div class="value">${customers.length}</div>
+          <div class="change up">
+            <i class="fas fa-arrow-up"></i> 5.7% from last month
+          </div>
+        </div>
+      `;
+
+      // Render recent orders
+      const recentOrdersTable = document.getElementById('recentOrders');
+      recentOrdersTable.innerHTML = `
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${orders.slice(0, 5).map(order => `
+            <tr>
+              <td>#${order.id}</td>
+              <td>${order.customer}</td>
+              <td>${formatDate(order.date)}</td>
+              <td>${formatCurrency(order.amount)}</td>
+              <td><span class="status ${order.status}">${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</span></td>
+              <td><a href="orders.html" class="btn btn-sm btn-outline-primary">View</a></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      `;
+
+      // Render popular products
+      const popularProductsTable = document.getElementById('popularProducts');
+      popularProductsTable.innerHTML = `
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Sales</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${products
+            .slice()
+            .sort((a, b) => b.sales - a.sales)
+            .slice(0, 5)
+            .map(product => `
+              <tr>
+                <td>${product.name}</td>
+                <td>${product.category}</td>
+                <td>${formatCurrency(product.price)}</td>
+                <td>${product.stock}</td>
+                <td>${product.sales}</td>
+                <td><a href="products.html" class="btn btn-sm btn-outline-primary">Edit</a></td>
+              </tr>
+            `).join('')}
+        </tbody>
+      `;
+    });
+    //to greeyt user after login 
+    window.addEventListener('DOMContentLoaded', () => {
+        const username = localStorage.getItem('adminUsername') || 'Admin';
+    const greetingPopup = document.getElementById('greetingPopup');
+
+    // ✅ Only show greeting if just logged in
+    const justLoggedIn = localStorage.getItem('justLoggedIn');
+
+    if (greetingPopup && justLoggedIn === 'true') {
+      greetingPopup.textContent = `👋 Hello, ${username}`;
+      greetingPopup.style.display = 'block';
+
+      setTimeout(() => {
+        greetingPopup.style.opacity = '1';
+        greetingPopup.style.transform = 'translateX(-50%) translateY(0)';
+      }, 100);
+
+      setTimeout(() => {
+        greetingPopup.style.opacity = '0';
+        greetingPopup.style.transform = 'translateX(-50%) translateY(-20px)';
+      }, 3000);
+
+      setTimeout(() => {
+        greetingPopup.style.display = 'none';
+      }, 4000);
+
+      // ✅ Clear the flag so it doesn't show again on page reload
+      localStorage.removeItem('justLoggedIn');
+    }
+  });
+  
+  </script>
+
+
+  <!-- to greet user after login-->
+ <div id="greetingPopup" style="
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background-color: #1989AC;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.5s ease;
+  font-size: 16px;
+  display: none;
+"></div>
+
+
+</body>
+</html>

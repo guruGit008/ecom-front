@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Aeromatx | Login</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="Aerospace Defense Login" name="keywords">
+  <meta content="Access your Aeromatx account" name="description">
+  <link href="img/favicon.ico" rel="icon">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="css/login.css" rel="stylesheet">
+</head>
+<body>
+  <div class="particles-container" id="particles"></div>
+
+  <div class="login-container">
+    <div class="login-image">
+      <div class="image-content">
+        <div class="brand-logo">
+          <img src="assets/flight.png" width="60" height="60" alt="Aeromatx Logo">
+        </div>
+        <h2>Welcome to Aeromatx</h2>
+        <p>Your gateway to premium aerospace components, equipment, and supplies for aviation enthusiasts and professionals.</p>
+
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-check" style="color: white; font-size: 12px;"></i>
+            </div>
+            <span>Access to thousands of aerospace parts</span>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-check" style="color: white; font-size: 12px;"></i>
+            </div>
+            <span>Fast global shipping & competitive pricing</span>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-check" style="color: white; font-size: 12px;"></i>
+            </div>
+            <span>Military-grade quality assurance</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-form">
+      <h1>Launch your journey</h1>
+      <div id="loginMessage" style="color: red; margin-top: 10px;"></div>
+
+      <form id="loginForm">
+        <div class="input-group">
+          <input type="email" id="email" placeholder=" " autocomplete="email" required>
+          <label for="email">Email Address</label>
+        </div>
+
+        <div class="input-group">
+          <input type="password" id="password" placeholder=" " autocomplete="current-password" required>
+          <label for="password">Password</label>
+        </div>
+
+        <div class="remember-forgot">
+          <div class="checkbox-container">
+            <input type="checkbox" id="remember" autocomplete="off">
+            <label for="remember">Remember me</label>
+          </div>
+          <a href="forgot-password.html" class="forgot-password">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="login-btn">
+          Launch Access
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </button>
+
+        <div class="register-link">
+          <p>Don't have an account? <a href="register.html">Register now</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+  <script>
+    // Particle background
+    document.addEventListener("DOMContentLoaded", function () {
+      if (typeof particlesJS !== "undefined") {
+        particlesJS("particles", {
+          particles: {
+            number: { value: 80, density: { enable: true, value_area: 800 } },
+            color: { value: "#FF4500" },
+            shape: { type: "circle" },
+            opacity: { value: 0.5 },
+            size: { value: 9, random: true },
+            line_linked: {
+              enable: true,
+              distance: 200,
+              color: "#FF4500",
+              opacity: 0.5,
+              width: 1
+            },
+            move: {
+              enable: true,
+              speed: 4,
+              direction: "none",
+              out_mode: "out"
+            }
+          },
+          interactivity: {
+            detect_on: "canvas",
+            events: {
+              onhover: { enable: true, mode: "repulse" },
+              onclick: { enable: true, mode: "push" },
+              resize: true
+            }
+          },
+          retina_detect: true
+        });
+      }
+    });
+
+    // Customer Login
+    document.addEventListener("DOMContentLoaded", function () {
+      const loginForm = document.getElementById("loginForm");
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+      const loginMessageDiv = document.getElementById("loginMessage");
+
+      if (loginForm) {
+        loginForm.addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const email = emailInput.value;
+          const password = passwordInput.value;
+
+          loginMessageDiv.textContent = "";
+          loginMessageDiv.style.color = "red";
+
+          if (!email.includes("@")) {
+            loginMessageDiv.textContent = "Please include an '@' in the email address.";
+            return;
+          }
+
+          const loginData = { email, password };
+          const API_ENDPOINT = "https://ecom-b-e85t.onrender.com/api/auth/login";
+
+          try {
+            const res = await fetch(API_ENDPOINT, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(loginData),
+            });
+
+            if (!res.ok) {
+              let errorMessage = `Login failed. Status: ${res.status}`;
+              try {
+                const errorData = await res.json();
+                if (errorData && errorData.message) {
+                  errorMessage = errorData.message;
+                }
+              } catch (e) {
+                console.error("Failed to parse error response:", e);
+              }
+              throw new Error(errorMessage);
+            }
+
+            const data = await res.json();
+
+            if (data && data.token) {
+              // ✅ Clear admin credentials
+              localStorage.removeItem("adminToken");
+              localStorage.removeItem("adminUsername");
+              localStorage.removeItem("adminRoles");
+
+              // ✅ Set role & store customer data
+              localStorage.setItem("activeRole", "CUSTOMER");
+              localStorage.setItem("loggedInUsername", data.username || email);
+              localStorage.setItem("authToken", data.token);
+              localStorage.setItem("userToken", data.token);
+              localStorage.setItem("userUsername", data.username);
+              localStorage.setItem("userEmail", data.email);
+              localStorage.setItem("userId", data.id);
+              localStorage.setItem("userRoles", JSON.stringify(data.roles));
+              localStorage.setItem("justLoggedIn", "true");
+
+              loginMessageDiv.textContent = "Login successful! Redirecting...";
+              loginMessageDiv.style.color = "green";
+              window.location.href = "index.html";
+            } else {
+              loginMessageDiv.textContent = "Login failed: Invalid server response.";
+            }
+
+          } catch (error) {
+            console.error("Login error:", error);
+            loginMessageDiv.textContent = error.message || "An unexpected error occurred.";
+          }
+        });
+      } else {
+        console.error("Login form with ID 'loginForm' not found.");
+      }
+    });
+  </script>
+</body>
+</html>

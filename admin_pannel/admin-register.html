@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Aeromatx | Admin Register</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Admin Registration" name="keywords">
+    <meta content="Register Admin Account" name="description">
+
+    <link href="../img/favicon.ico" rel="icon">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="../css/register.css" rel="stylesheet">
+
+    <script src="../js/api.js"></script>
+    <script src="../js/layout-loader.js"></script>
+</head>
+
+<body>
+
+    <div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">Admin Registration</h1>
+            <div class="d-inline-flex">
+                <p class="m-0"><a href="#">Home</a></p>
+                <p class="m-0 px-2">-</p>
+                <p class="m-0">Register</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid pt-5">
+        <div class="text-center mb-4">
+            <h2 class="section-title px-5"><span class="px-2">Create Admin Account</span></h2>
+        </div>
+        <div class="row px-xl-5 justify-content-center">
+            <div class="col-lg-7 mb-5">
+                <div class="contact-form">
+                    <div id="registerMessage" class="mb-3 text-center"></div>
+
+                    <!-- Step 1: Admin Registration Form -->
+                    <form id="adminRegistrationForm" novalidate>
+                        <div class="control-group mb-4">
+                            <label for="username" class="required">Username</label>
+                            <input type="text" class="form-control" id="username" placeholder="Username" required />
+                        </div>
+
+                        <div class="control-group mb-4">
+                            <label for="email" class="required">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Email" required />
+                        </div>
+
+                        <div class="control-group mb-4">
+                            <label for="company" class="required">Company Name</label>
+                            <input type="text" class="form-control" id="company" placeholder="Company Name" required />
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="control-group mb-4">
+                                    <label for="password" class="required">Password</label>
+                                    <input type="password" class="form-control" id="password" placeholder="Password" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="control-group mb-4">
+                                    <label for="confirmPassword" class="required">Confirm Password</label>
+                                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button class="btn btn-primary py-2 px-4" type="submit">Send OTP</button>
+                        </div>
+                    </form>
+
+                    <!-- Step 2: OTP -->
+                    <div id="otpSection" style="display: none;" class="mt-4">
+                        <form id="adminOtpForm" novalidate>
+                            <div class="control-group mb-3">
+                                <label for="otp" class="required">Enter OTP</label>
+                                <input type="text" class="form-control" id="otp" placeholder="6-digit OTP" maxlength="6" required />
+                            </div>
+                            <div class="text-center">
+                                <button class="btn btn-success py-2 px-4" type="submit">Verify OTP</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="mt-4 text-center">
+                        <p>Already an admin? <a href="admin-login.html">Sign In</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="../lib/easing/easing.min.js"></script>
+    <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="../js/main.js"></script>
+
+    <script>
+        const registerForm = document.getElementById("adminRegistrationForm");
+        const otpForm = document.getElementById("adminOtpForm");
+        const otpSection = document.getElementById("otpSection");
+        const messageDiv = document.getElementById("registerMessage");
+
+        let email = "";
+
+        const displayMessage = (msg, color) => {
+            messageDiv.textContent = msg;
+            messageDiv.style.color = color;
+            messageDiv.style.display = "block";
+        };
+
+        registerForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById("username").value.trim();
+            email = document.getElementById("email").value.trim();
+            const company = document.getElementById("company").value.trim();
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            if (!username || !email || !company || !password || !confirmPassword) {
+                displayMessage("Please fill all fields.", "red");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                displayMessage("Passwords do not match.", "red");
+                return;
+            }
+
+            const payload = {
+                username,
+                email,
+                password,
+                company,
+                role: "ADMIN"
+            };
+
+            try {
+                displayMessage("Sending OTP...", "blue");
+                const res = await fetch("https://ecom-b-e85t.onrender.com/api/auth/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    displayMessage(data.message || "OTP sent. Check your email.", "green");
+                    registerForm.style.display = "none";
+                    otpSection.style.display = "block";
+                } else {
+                    displayMessage(data.message || "Failed to send OTP.", "red");
+                }
+            } catch (err) {
+                displayMessage("Error connecting to server.", "red");
+            }
+        });
+
+        otpForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const otp = document.getElementById("otp").value.trim();
+            if (!otp || otp.length !== 6) {
+                displayMessage("Please enter valid 6-digit OTP.", "red");
+                return;
+            }
+
+            const payload = { email, otp };
+
+            try {
+                displayMessage("Verifying OTP...", "blue");
+                const res = await fetch("https://ecom-b-e85t.onrender.com/api/auth/register/verify-otp", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    displayMessage(data.message || "Admin registered successfully!", "green");
+                    setTimeout(() => window.location.href = "admins.html", 2000);
+                } else {
+                    displayMessage(data.message || "Invalid OTP", "red");
+                }
+            } catch (err) {
+                displayMessage("Verification failed.", "red");
+            }
+        });
+    </script>
+</body>
+
+</html>

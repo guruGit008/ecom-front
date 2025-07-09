@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Aeromatx | Profile</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <link href="img/favicon.ico" rel="icon">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link href="css/register.css" rel="stylesheet">
+
+  <style>
+    .verify-wrapper { position: relative; }
+    .verify-wrapper input { padding-right: 110px; }
+    .verify-badge, .verify-link {
+      position: absolute;
+      top: 50%; right: 10px;
+      transform: translateY(-50%);
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 12px;
+      white-space: nowrap;
+      z-index: 2;
+    }
+    .verify-badge { background-color: #28a745; color: white; }
+    .verify-link {
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .verify-link:hover { background-color: #0056b3; }
+  </style>
+</head>
+<body onload="loadLayout()">
+
+<div id="header"></div>
+
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+  <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+    <h1 class="font-weight-semi-bold text-uppercase mb-3">My Profile</h1>
+    <div class="d-inline-flex">
+      <p class="m-0"><a href="index.html">Home</a></p>
+      <p class="m-0 px-2">-</p>
+      <p class="m-0">Profile</p>
+    </div>
+  </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Profile Start -->
+<div class="container-fluid pt-5">
+  <div class="text-center mb-4">
+    <h2 class="section-title px-5"><span class="px-2">Account Information</span></h2>
+  </div>
+  <div class="row px-xl-5">
+    <div class="col-lg-8 mx-auto mb-5">
+      <div class="card border-0">
+        <div class="card-header bg-primary text-white">
+          <i class="fa fa-user-circle mr-2"></i>Personal Details
+        </div>
+        <div class="card-body">
+          <form id="profileForm">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label font-weight-semi-bold">Full Name</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="fullName" readonly>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label font-weight-semi-bold">Email</label>
+              <div class="col-sm-9 verify-wrapper">
+                <input type="email" class="form-control" id="email" readonly>
+                <span id="emailStatus" class="verify-badge d-none">Verified</span>
+                <a id="verifyEmailBtn" href="editprofile.html" class="verify-link d-none">Verify Now</a>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label font-weight-semi-bold">Company</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="company" readonly>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label font-weight-semi-bold">Mobile</label>
+              <div class="col-sm-9 verify-wrapper">
+                <input type="text" class="form-control" id="mobile" readonly>
+                <span id="mobileStatus" class="verify-badge d-none">Verified</span>
+                <a id="verifyMobileBtn" href="editprofile.html" class="verify-link d-none">Verify Now</a>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label font-weight-semi-bold">Permanent Address</label>
+              <div class="col-sm-9">
+                <textarea class="form-control" id="permanentAddress" readonly rows="2"></textarea>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label font-weight-semi-bold">Temporary Address</label>
+              <div class="col-sm-9">
+                <textarea class="form-control" id="temporaryAddress" readonly rows="2"></textarea>
+              </div>
+            </div>
+
+            <div class="text-right">
+              <a href="editprofile.html" class="btn btn-primary py-2 px-4">Edit Profile</a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="index.html" class="btn btn-secondary py-2 px-4 mr-2">
+          <i class="fa fa-home mr-1"></i>Back to Home
+        </a>
+        <a href="#" id="logoutBtn" class="btn btn-outline-danger py-2 px-4">
+          <i class="fa fa-sign-out-alt mr-1"></i>Logout
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Profile End -->
+
+<div id="footer"></div>
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+<!-- JS Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+<!-- Profile JS -->
+<!-- Only JS section shown here as the rest is unchanged HTML -->
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const isAdminPage = window.location.pathname.includes('/admin_pannel/');
+  const token = isAdminPage ? localStorage.getItem('adminToken') : localStorage.getItem('userToken');
+  const loginPage = isAdminPage ? '/admin_pannel/admin-login.html' : 'login.html';
+
+  if (!token) {
+    alert('Please login first.');
+    window.location.href = loginPage;
+    return;
+  }
+
+  try {
+    const res = await fetch('https://ecom-b-e85t.onrender.com/api/users/profile', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    if (!res.ok) throw new Error('Failed to fetch profile.');
+    const user = await res.json();
+
+    document.getElementById('fullName').value = user.username || '';
+    document.getElementById('email').value = user.email || '';
+    document.getElementById('company').value = user.company || '';
+    document.getElementById('mobile').value = user.mobile || '';
+    document.getElementById('permanentAddress').value = user.permanentAddress || '';
+    document.getElementById('temporaryAddress').value = user.temporaryAddress || '';
+
+    // Email Verification
+    const emailStatus = document.getElementById('emailStatus');
+    const verifyEmailBtn = document.getElementById('verifyEmailBtn');
+    if (user.emailVerified) {
+      emailStatus.classList.remove('d-none');
+      verifyEmailBtn.classList.add('d-none');
+    } else {
+      emailStatus.textContent = 'Not Verified';
+      emailStatus.style.backgroundColor = '#ffc107';
+      emailStatus.classList.remove('d-none');
+      verifyEmailBtn.classList.remove('d-none');
+    }
+
+    // Mobile Verification
+    const mobileStatus = document.getElementById('mobileStatus');
+    const verifyMobileBtn = document.getElementById('verifyMobileBtn');
+    if (user.mobileVerified) {
+      mobileStatus.classList.remove('d-none');
+      verifyMobileBtn.classList.add('d-none');
+    } else {
+      mobileStatus.textContent = 'Not Verified';
+      mobileStatus.style.backgroundColor = '#ffc107';
+      mobileStatus.classList.remove('d-none');
+      verifyMobileBtn.classList.remove('d-none');
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      const keys = isAdminPage
+        ? ['adminToken', 'adminUsername', 'adminEmail', 'adminId', 'adminRoles']
+        : ['userToken', 'userUsername', 'userEmail', 'userId', 'userRoles'];
+
+      keys.forEach(k => localStorage.removeItem(k));
+      localStorage.removeItem('activeRole');
+      localStorage.removeItem('justLoggedIn');
+      window.location.href = loginPage;
+    });
+
+  } catch (err) {
+    console.error(err);
+    alert('Error loading profile.');
+  }
+});
+</script>
+
+
+</body>
+</html>

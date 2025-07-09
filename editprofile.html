@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Edit Profile | Aeromatx</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+  body {
+    background-color: #f8f9fa;
+  }
+
+  .container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  h2.text-center {
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+
+  .form-group label {
+    font-weight: 500;
+  }
+
+  .form-control {
+    border-radius: 8px;
+  }
+
+  .btn {
+    border-radius: 6px;
+  }
+
+  .btn-link {
+    padding-left: 0;
+    color: #007bff;
+  }
+
+  .btn-warning,
+  .btn-success,
+  .btn-primary,
+  .btn-secondary {
+    min-width: 140px;
+  }
+
+  #editProfileForm .btn + .form-control,
+  #editProfileForm .form-control + .btn {
+    margin-top: 10px;
+  }
+
+  textarea.form-control {
+    min-height: 100px;
+  }
+
+  .modal-content {
+    border-radius: 10px;
+  }
+
+  .modal-header {
+    background-color: #007bff;
+    color: white;
+    border-bottom: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  .modal-body input {
+    border-radius: 6px;
+  }
+</style>
+
+<body onload="loadUserProfile()">
+
+<div class="container py-5">
+  <h2 class="text-center mb-4">Edit Profile</h2>
+  <form id="editProfileForm" class="col-md-8 mx-auto">
+
+    <!-- Name -->
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" class="form-control" id="username" required>
+    </div>
+
+    <!-- Current Email (Read-only) -->
+    <div class="form-group">
+      <label>Current Email</label>
+      <input type="email" class="form-control" id="currentEmail" readonly>
+      <button class="btn btn-link" type="button" data-toggle="modal" data-target="#changeEmailModal">Change Email</button>
+    </div>
+
+    <!-- Verify Email Section -->
+    <div class="form-group">
+      <label>Verify Email</label><br>
+      <button type="button" class="btn btn-warning" onclick="sendOtp('email')">Send Email OTP</button>
+      <input type="text" class="form-control mt-2" id="emailOtp" placeholder="Enter Email OTP">
+      <button type="button" class="btn btn-success mt-1" onclick="verifyOtp('email')">Verify Email</button>
+    </div>
+
+    <!-- Mobile Number -->
+    <div class="form-group">
+      <label>Mobile Number</label>
+      <input type="text" class="form-control" id="mobile">
+      <button type="button" class="btn btn-warning mt-2" onclick="sendOtp('mobile')">Send OTP</button>
+      <input type="text" class="form-control mt-2" id="mobileOtp" placeholder="Enter OTP">
+      <button type="button" class="btn btn-success mt-1" onclick="verifyOtp('mobile')">Verify Mobile</button>
+    </div>
+
+    <!-- Addresses -->
+    <div class="form-group">
+      <label>Permanent Address</label>
+      <textarea class="form-control" id="permanentAddress"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Temporary Address</label>
+      <textarea class="form-control" id="temporaryAddress"></textarea>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" class="btn btn-primary mt-3">Update Profile</button>
+
+    <!-- Back to Profile -->
+    <a id="backToProfileBtn" href="#" class="btn btn-secondary mt-3 ml-3">Back to Profile</a>
+
+  </form>
+</div>
+
+<!-- MODAL FOR EMAIL CHANGE -->
+<div class="modal fade" id="changeEmailModal" tabindex="-1" role="dialog" aria-labelledby="changeEmailModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Change Email</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <label>New Email</label>
+        <input type="email" class="form-control" id="newEmail" placeholder="Enter new email">
+        <button class="btn btn-info mt-2" onclick="requestEmailChangeOtp()">Send OTP to Mobile</button>
+        <input type="text" class="form-control mt-2" id="changeEmailOtp" placeholder="Enter OTP from mobile">
+        <button class="btn btn-success mt-1" onclick="submitEmailChange()">Confirm & Change Email</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const activeRole = localStorage.getItem("activeRole");
+const token = activeRole === "ADMIN"
+  ? localStorage.getItem("adminToken")
+  : localStorage.getItem("userToken");
+
+async function loadUserProfile() {
+  try {
+    const res = await fetch('https://ecom-b-e85t.onrender.com/api/users/profile', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const user = await res.json();
+    document.getElementById('username').value = user.username || '';
+    document.getElementById('currentEmail').value = user.email || '';
+    document.getElementById('mobile').value = user.mobile || '';
+    document.getElementById('permanentAddress').value = user.permanentAddress || '';
+    document.getElementById('temporaryAddress').value = user.temporaryAddress || '';
+
+    // Set "Back to Profile" link based on role
+    document.getElementById('backToProfileBtn').href =
+      activeRole === "ADMIN" ? "user-profile.html" : "user-profile.html";
+  } catch (e) {
+    alert("Failed to load profile. Please login again.");
+    clearStorageAndRedirect();
+  }
+}
+
+document.getElementById('editProfileForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const payload = {
+    username: document.getElementById('username').value,
+    email: document.getElementById('currentEmail').value,
+    mobileNumber: document.getElementById('mobile').value,
+    permanentAddress: document.getElementById('permanentAddress').value,
+    temporaryAddress: document.getElementById('temporaryAddress').value
+  };
+
+  const res = await fetch('https://ecom-b-e85t.onrender.com/api/users/profile', {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const msg = await res.text();
+  alert(msg);
+  window.location.href = activeRole === "ADMIN" ? "user-profile.html" : "user-profile.html";
+});
+
+async function sendOtp(type) {
+  const value = type === 'email'
+    ? document.getElementById('currentEmail').value
+    : document.getElementById(type).value;
+
+  const url = `https://ecom-b-e85t.onrender.com/api/users/send-otp/${type}?${type}=${encodeURIComponent(value)}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
+
+  const text = await res.text();
+  alert(text);
+}
+
+async function verifyOtp(type) {
+  const value = type === 'email'
+    ? document.getElementById('currentEmail').value
+    : document.getElementById(type).value;
+  const otp = document.getElementById(type + 'Otp').value;
+
+  const url = `https://ecom-b-e85t.onrender.com/api/users/verify/${type}?${type}=${encodeURIComponent(value)}&otp=${otp}`;
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
+
+  const text = await res.text();
+  alert(text);
+}
+
+async function requestEmailChangeOtp() {
+  const newEmail = document.getElementById('newEmail').value;
+  if (!newEmail) {
+    alert("Please enter a new email.");
+    return;
+  }
+
+  const check = await fetch('https://ecom-b-e85t.onrender.com/api/users/check-mobile-verification', {
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  const json = await check.json();
+  if (!json.mobileVerified) {
+    alert("Please verify your mobile number first.");
+    return;
+  }
+
+  const res = await fetch(`https://ecom-b-e85t.onrender.com/api/users/email-change/send-otp?newEmail=${encodeURIComponent(newEmail)}`, {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+
+  const text = await res.text();
+  alert(text);
+}
+
+async function submitEmailChange() {
+  const newEmail = document.getElementById('newEmail').value;
+  const otp = document.getElementById('changeEmailOtp').value;
+
+  const res = await fetch('https://ecom-b-e85t.onrender.com/api/users/email-change/verify-otp', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ newEmail, otp })
+  });
+
+  const result = await res.text();
+  if (res.ok) {
+    alert("Email changed successfully. Please login again.");
+    clearStorageAndRedirect();
+  } else {
+    alert(result);
+  }
+}
+
+function clearStorageAndRedirect() {
+  if (activeRole === "ADMIN") {
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminUsername");
+    localStorage.removeItem("adminEmail");
+    localStorage.removeItem("adminId");
+    localStorage.removeItem("adminRoles");
+    window.location.href = "/admin_pannel/admin-login.html";
+  } else {
+    localStorage.removeItem("userToken");
+    localStorage.removeItem("userUsername");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userRoles");
+    window.location.href = "/login.html";
+  }
+  localStorage.removeItem("activeRole");
+  localStorage.removeItem("justLoggedIn");
+}
+</script>
+
+</body>
+</html>

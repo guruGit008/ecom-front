@@ -1,0 +1,26 @@
+<!-- topnav.html -->
+<div class="top-nav d-flex justify-content-between align-items-center px-3 py-2 bg-light border-bottom">
+  <!-- Search Bar -->
+  <div class="search-bar d-flex align-items-center">
+    <i class="fas fa-search mr-2 text-muted"></i>
+    <input type="text" class="form-control form-control-sm" placeholder="Search customers..." id="customerSearch" />
+  </div>
+
+  <!-- User Menu -->
+  <div class="user-menu d-flex align-items-center">
+    <!-- Notifications -->
+    <div class="notification mr-3 position-relative">
+      <i class="fas fa-bell fa-lg text-dark" style="cursor:pointer;"></i>
+      <span class="badge badge-danger position-absolute" style="top: -8px; right: -10px;">3</span>
+    </div>
+
+    <!-- Profile Picture -->
+    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Admin" class="rounded-circle mr-2" width="35" height="35" />
+
+    <!-- Username -->
+    <span id="adminDisplay" style="cursor: pointer; color: #007bff; font-weight: 500;">Admin User</span>
+
+    <!-- Logout Button -->
+    <button id="adminLogoutBtn" class="btn btn-sm btn-outline-danger ml-3">Logout</button>
+  </div>
+</div>

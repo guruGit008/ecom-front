@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Multiple Products</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #F8F8F8;
+      padding: 30px;
+    }
+
+    .form-container {
+      max-width: 900px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.05);
+      border-top: 4px solid #1989AC;
+    }
+
+    .form-container h2 {
+      color: #1989AC;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .product-block {
+      background-color: #F8F8F8;
+      border: 1px solid #e4e7ed;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .product-block h4 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 12px;
+      color: #333;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 6px;
+      border: 1px solid #D3D3D3;
+      font-size: 15px;
+      background-color: #ffffff;
+    }
+
+    input[type="file"] {
+      background-color: #ffffff;
+    }
+
+    small.note {
+      font-weight: normal;
+      color: #888;
+      display: block;
+      margin-top: 4px;
+      font-size: 13px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .add-btn {
+      background-color: #1989AC;
+      color: white;
+    }
+
+    .add-btn:hover {
+      background-color: #126b88;
+    }
+
+    .submit-btn {
+      background-color: #1989AC;
+      color: white;
+      width: 100%;
+    }
+
+    .submit-btn:hover {
+      background-color: #126b88;
+    }
+
+    .remove-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .remove-btn:hover {
+      background-color: #c82333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Vendor: Adding Items</h2>
+    <form id="productForm" action="/addProducts" method="POST" enctype="multipart/form-data">
+
+      <div id="productsContainer">
+        <!-- Product blocks will be added here -->
+      </div>
+
+      <button type="button" class="add-btn" onclick="addProductBlock()">+ Add Another Product</button>
+      <button type="submit" class="submit-btn">Submit All Products</button>
+    </form>
+  </div>
+
+  <script>
+    let productCount = 0;
+
+    function addProductBlock() {
+      productCount++;
+      const container = document.getElementById('productsContainer');
+      const block = document.createElement('div');
+      block.classList.add('product-block');
+      block.innerHTML = `
+        <button type="button" class="remove-btn" onclick="removeProductBlock(this)">Remove</button>
+        <h4>Product ${productCount}</h4>
+
+        <label>Product Name</label>
+        <input type="text" name="products[${productCount}].name" required>
+
+        <label>Description</label>
+        <textarea name="products[${productCount}].description" rows="3" required></textarea>
+
+        <label>Price (₹)</label>
+        <input type="number" name="products[${productCount}].price" min="0" required>
+
+        <label>Category</label>
+        <select name="products[${productCount}].category" required>
+          <option value="">-- Select Category --</option>
+          <option value="raw-materials">Raw Materials</option>
+          <option value="SatCom Products">SATCOM products </option>
+          <option value="Magnets">Magnets</option>
+          <option value="Ceramics">Ceramics</option>
+        </select>
+
+        <label>Product Image</label>
+        <input type="file" name="products[${productCount}].image" accept="image/*" required onchange="validateImage(this)">
+        <small class="note">Max file size: 100KB. Recommended image ratio: 1:4 (Width:Height)</small>
+      `;
+      container.appendChild(block);
+    }
+
+    function removeProductBlock(button) {
+      const block = button.parentNode;
+      block.remove();
+    }
+
+    function validateImage(input) {
+      const file = input.files[0];
+      if (!file) return;
+
+      // Check file size
+      if (file.size > 102400) {
+        alert('Image must be under 100KB.');
+        input.value = '';
+        return;
+      }
+
+      // Check image ratio
+      const img = new Image();
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        img.onload = function () {
+          const ratio = img.width / img.height;
+          const roundedRatio = Math.round(ratio * 10) / 10;
+          if (roundedRatio !== 4.0) {
+            alert(`Image ratio must be 1:4. Yours is ${roundedRatio.toFixed(1)}:1`);
+            input.value = '';
+          }
+        };
+        img.src = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    // Add the first product block on page load
+    window.onload = addProductBlock;
+  </script>
+
+</body>
+</html>

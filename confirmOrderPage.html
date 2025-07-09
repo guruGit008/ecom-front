@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - Neumorphic Design</title>
+    <style>
+        :root {
+            --custom-primary: #1989AC;
+            --custom-secondary: #e4e7ed;
+            --custom-border: #D3D3D3;
+            --custom-background: #F8F8F8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--custom-background);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Floating decorative circles */
+        .bg-circles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--custom-primary), #156b89);
+            opacity: 0.6;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .circle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .circle:nth-child(2) {
+            width: 20px;
+            height: 20px;
+            top: 20%;
+            left: 15%;
+            animation-delay: 2s;
+        }
+
+        .circle:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            right: 15%;
+            animation-delay: 4s;
+        }
+
+        .circle:nth-child(4) {
+            width: 120px;
+            height: 120px;
+            bottom: 10%;
+            right: 5%;
+            animation-delay: 6s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-10px) translateX(-10px); }
+            75% { transform: translateY(-30px) translateX(5px); }
+        }
+
+        .container {
+            background: var(--custom-secondary);
+            border-radius: 30px;
+            box-shadow: 
+                20px 20px 60px #c0c4ca,
+                -20px -20px 60px #ffffff;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            border: 2px solid var(--custom-border);
+        }
+
+        /* Shipping Animation */
+        .shipping-animation {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, var(--custom-primary), #156b89);
+            border-radius: 50%;
+            margin: 0 auto 40px;
+            position: relative;
+            box-shadow: 
+                inset 10px 10px 20px rgba(0,0,0,0.1),
+                inset -10px -10px 20px rgba(255,255,255,0.3),
+                15px 15px 40px rgba(25, 137, 172, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .shipping-scene {
+            position: relative;
+            width: 200px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delivery-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            border-radius: 8px;
+            box-shadow: 
+                inset 2px 2px 4px rgba(255,255,255,0.3),
+                inset -2px -2px 4px rgba(0,0,0,0.2),
+                4px 4px 12px rgba(0,0,0,0.3);
+            animation: boxPulse 3s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        .delivery-box::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            height: 2px;
+            background: #654321;
+            border-radius: 1px;
+        }
+
+        .delivery-box::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: #654321;
+            transform: translateX(-50%);
+            border-radius: 1px;
+        }
+
+        .box-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            z-index: 2;
+        }
+
+        .box-label::before {
+            content: '📦';
+        }
+
+        @keyframes boxPulse {
+            0%, 100% { 
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 
+                    inset 2px 2px 4px rgba(255,255,255,0.3),
+                    inset -2px -2px 4px rgba(0,0,0,0.2),
+                    4px 4px 12px rgba(0,0,0,0.3);
+            }
+            50% { 
+                transform: translate(-50%, -50%) scale(1.05);
+                box-shadow: 
+                    inset 2px 2px 4px rgba(255,255,255,0.4),
+                    inset -2px -2px 4px rgba(0,0,0,0.3),
+                    6px 6px 16px rgba(0,0,0,0.4);
+            }
+        }
+
+        .plane {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            animation: fly 4s ease-in-out infinite;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .plane::before {
+            content: '✈️';
+        }
+
+        @keyframes fly {
+            0%, 100% { transform: translateX(0px) translateY(0px); }
+            50% { transform: translateX(-20px) translateY(-10px); }
+        }
+
+        .ground {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to top, var(--custom-secondary) 0%, var(--custom-border) 100%);
+            border-radius: 20px;
+        }
+
+        .truck {
+            position: absolute;
+            bottom: 10px;
+            left: 20px;
+            font-size: 22px;
+            animation: drive 3s ease-in-out infinite;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .truck::before {
+            content: '🚚';
+        }
+
+        @keyframes drive {
+            0%, 100% { transform: translateX(0px); }
+            50% { transform: translateX(30px); }
+        }
+
+        .ship {
+            position: absolute;
+            bottom: 15px;
+            right: 30px;
+            font-size: 20px;
+            animation: sail 5s ease-in-out infinite;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .ship::before {
+            content: '🚢';
+        }
+
+        @keyframes sail {
+            0%, 100% { transform: translateX(0px) translateY(0px); }
+            50% { transform: translateX(-15px) translateY(-5px); }
+        }
+
+        .sparkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffffff;
+            border-radius: 50%;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        .sparkle:nth-child(1) { top: 30%; left: 20%; animation-delay: 0s; }
+        .sparkle:nth-child(2) { top: 50%; left: 80%; animation-delay: 0.5s; }
+        .sparkle:nth-child(3) { top: 70%; left: 30%; animation-delay: 1s; }
+        .sparkle:nth-child(4) { top: 20%; left: 70%; animation-delay: 1.5s; }
+        .sparkle:nth-child(5) { top: 80%; left: 60%; animation-delay: 2s; }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .title {
+            font-size: 28px;
+            color: var(--custom-primary);
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-message {
+            background: var(--custom-secondary);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 
+                12px 12px 24px #c0c4ca,
+                -12px -12px 24px #ffffff;
+            font-size: 16px;
+            color: var(--custom-primary);
+            line-height: 1.6;
+            font-weight: 500;
+            border: 1px solid var(--custom-border);
+        }
+
+        /* Success checkmark animation */
+        .success-checkmark {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                8px 8px 16px rgba(76, 175, 80, 0.3),
+                -8px -8px 16px rgba(255,255,255,0.8);
+            animation: checkmarkPulse 2s ease-in-out infinite;
+        }
+
+        .success-checkmark::before {
+            content: '✓';
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        @keyframes checkmarkPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Order status indicator */
+        .status-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .status-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--custom-primary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-step.active {
+            color: var(--custom-primary);
+        }
+
+        .status-step.completed {
+            color: #4CAF50;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--custom-border);
+            transition: all 0.3s ease;
+        }
+
+        .status-step.active .status-dot {
+            background: var(--custom-primary);
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        .status-step.completed .status-dot {
+            background: #4CAF50;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .status-line {
+            width: 40px;
+            height: 2px;
+            background: var(--custom-border);
+            position: relative;
+        }
+
+        .status-line.completed {
+            background: #4CAF50;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .shipping-animation {
+                width: 250px;
+                height: 250px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+            }
+
+            .contact-message {
+                font-size: 14px;
+            }
+
+            .status-indicator {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .status-line {
+                width: 2px;
+                height: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-circles">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+
+    <div class="container">
+        <div class="success-checkmark"></div>
+        
+        <div class="shipping-animation">
+            <div class="shipping-scene">
+                <div class="delivery-box">
+                    <div class="box-label"></div>
+                </div>
+                <div class="plane"></div>
+                <div class="ground"></div>
+                <div class="truck"></div>
+                <div class="ship"></div>
+                <div class="sparkles">
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                </div>
+            </div>
+        </div>
+
+        <h1 class="title">Your order has been placed</h1>
+        <p class="subtitle">Thank you for purchasing our product! We send you a tracking number when we ship. It usually takes 2-3 days.</p>
+        
+        <div class="status-indicator">
+            <div class="status-step completed">
+                <div class="status-dot"></div>
+                <span>Order Placed</span>
+            </div>
+            <div class="status-line completed"></div>
+            <div class="status-step active">
+                <div class="status-dot"></div>
+                <span>Processing</span>
+            </div>
+            <div class="status-line"></div>
+            <div class="status-step">
+                <div class="status-dot"></div>
+                <span>Shipped</span>
+            </div>
+            <div class="status-line"></div>
+            <div class="status-step">
+                <div class="status-dot"></div>
+                <span>Delivered</span>
+            </div>
+        </div>
+        
+        <div class="contact-message">
+            We will contact you back soon with further details about your order and shipping information.
+        </div>
+    </div>
+
+    <script>
+        // Add entrance animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(50px)';
+            container.style.transition = 'all 0.6s ease';
+            
+            setTimeout(() => {
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 100);
+
+            // Animate status progression
+            setTimeout(() => {
+                const steps = document.querySelectorAll('.status-step');
+                const lines = document.querySelectorAll('.status-line');
+                
+                // Simulate order progression
+                let currentStep = 1; // Start with "Processing" active
+                
+                const progressOrder = () => {
+                    if (currentStep < steps.length - 1) {
+                        steps[currentStep].classList.add('completed');
+                        steps[currentStep].classList.remove('active');
+                        
+                        if (lines[currentStep - 1]) {
+                            lines[currentStep - 1].classList.add('completed');
+                        }
+                        
+                        currentStep++;
+                        if (currentStep < steps.length) {
+                            steps[currentStep].classList.add('active');
+                        }
+                    }
+                };
+                
+                // Progress through steps every 3 seconds
+                setInterval(progressOrder, 3000);
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

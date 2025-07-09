@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Edit Profile | Aeromatx</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body onload="loadUserProfile()">
+
+<div class="container py-5">
+  <h2 class="text-center mb-4">Edit Profile</h2>
+  <form id="editProfileForm" class="col-md-8 mx-auto">
+
+    <!-- Name -->
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" class="form-control" id="username" required>
+    </div>
+
+    <!-- Current Email (Read-only) -->
+    <div class="form-group">
+      <label>Current Email</label>
+      <input type="email" class="form-control" id="currentEmail" readonly>
+      <button class="btn btn-link" type="button" data-toggle="modal" data-target="#changeEmailModal">Change Email</button>
+    </div>
+
+    <!-- Verify Email Section -->
+    <div class="form-group">
+      <label>Verify Email</label><br>
+      <button type="button" class="btn btn-warning" onclick="sendOtp('email')">Send Email OTP</button>
+      <input type="text" class="form-control mt-2" id="emailOtp" placeholder="Enter Email OTP">
+      <button type="button" class="btn btn-success mt-1" onclick="verifyOtp('email')">Verify Email</button>
+    </div>
+
+    <!-- Mobile Number -->
+    <div class="form-group">
+      <label>Mobile Number</label>
+      <input type="text" class="form-control" id="mobile">
+      <button type="button" class="btn btn-warning mt-2" onclick="sendOtp('mobile')">Send OTP</button>
+      <input type="text" class="form-control mt-2" id="mobileOtp" placeholder="Enter OTP">
+      <button type="button" class="btn btn-success mt-1" onclick="verifyOtp('mobile')">Verify Mobile</button>
+    </div>
+
+    <!-- Addresses -->
+    <div class="form-group">
+      <label>Permanent Address</label>
+      <textarea class="form-control" id="permanentAddress"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Temporary Address</label>
+      <textarea class="form-control" id="temporaryAddress"></textarea>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" class="btn btn-primary mt-3">Update Profile</button>
+
+    <!-- Back to Profile -->
+    <a id="backToProfileBtn" href="#" class="btn btn-secondary mt-3 ml-3">Back to Profile</a>
+
+  </form>
+</div>
+
+<!-- MODAL FOR EMAIL CHANGE -->
+<div class="modal fade" id="changeEmailModal" tabindex="-1" role="dialog" aria-labelledby="changeEmailModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Change Email</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <label>New Email</label>
+        <input type="email" class="form-control" id="newEmail" placeholder="Enter new email">
+        <button class="btn btn-info mt-2" onclick="requestEmailChangeOtp()">Send OTP to Mobile</button>
+        <input type="text" class="form-control mt-2" id="changeEmailOtp" placeholder="Enter OTP from mobile">
+        <button class="btn btn-success mt-1" onclick="submitEmailChange()">Confirm & Change Email</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const isAdminPage = window.location.pathname.includes('/admin_pannel/');
+const token = isAdminPage ? localStorage.getItem('adminToken') : localStorage.getItem('userToken');
+const loginRedirect = isAdminPage ? '/admin_pannel/admin-login.html' : '/login.html';
+
+async function loadUserProfile() {
+  try {
+    const res = await fetch('https://ecom-b-e85t.onrender.com/api/users/profile', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error('Unauthorized');
+    const user = await res.json();
+
+    document.getElementById('username').value = user.username || '';
+    document.getElementById('currentEmail').value = user.email || '';
+    document.getElementById('mobile').value = user.mobile || '';
+    document.getElementById('permanentAddress').value = user.permanentAddress || '';
+    document.getElementById('temporaryAddress').value = user.temporaryAddress || '';
+    document.getElementById('backToProfileBtn').href = isAdminPage ? "user-profile.html" : "../user-profile.html";
+  } catch (err) {
+    alert("Please login again.");
+    clearStorageAndRedirect();
+  }
+}
+
+document.getElementById('editProfileForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const payload = {
+    username: document.getElementById('username').value,
+    email: document.getElementById('currentEmail').value,
+    mobileNumber: document.getElementById('mobile').value,
+    permanentAddress: document.getElementById('permanentAddress').value,
+    temporaryAddress: document.getElementById('temporaryAddress').value
+  };
+
+  const res = await fetch('https://ecom-b-e85t.onrender.com/api/users/profile', {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const msg = await res.text();
+  alert(msg);
+  window.location.href = isAdminPage ? "user-profile.html" : "../user-profile.html";
+});
+
+// Clear & redirect
+function clearStorageAndRedirect() {
+  const keys = isAdminPage
+    ? ['adminToken', 'adminUsername', 'adminEmail', 'adminId', 'adminRoles']
+    : ['userToken', 'userUsername', 'userEmail', 'userId', 'userRoles'];
+  keys.forEach(k => localStorage.removeItem(k));
+  localStorage.removeItem('activeRole');
+  localStorage.removeItem('justLoggedIn');
+  window.location.href = loginRedirect;
+}
+</script>
+
+
+</body>
+</html>
