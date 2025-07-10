@@ -638,6 +638,13 @@ document.querySelector(".add-to-cart-btn").addEventListener("click", () => {
 
 <script>
 function showAddToCartPopup(productName) {
+    // Remove any accidental Bootstrap modal leftovers
+    const backdrops = document.querySelectorAll('.modal-backdrop');
+    backdrops.forEach(b => b.remove());
+
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = 'auto';
+
     const popup = document.createElement('div');
     popup.className = 'added-to-cart-popup show';
     popup.innerHTML = `<i class="fa fa-check-circle"></i> ${productName} added to cart!`;
