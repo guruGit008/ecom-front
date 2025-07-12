@@ -1,153 +1,302 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products | E-commerce Admin</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Products | Admin Panel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div id="sidebar-placeholder"></div>
-    
-    <!-- Main Content -->
-    <div class="main">
-        <!-- Top Navigation -->
-                 <div id="top-navbar-placeholder"></div>
+<div id="sidebar-placeholder"></div>
 
-        
-        <!-- Content Area -->
-        <div class="content">
-            <div class="page-header">
-                <h2>Products Management</h2>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#addProductModal">
-                    <i class="fas fa-plus"></i> Add Product
-                </button>
-            </div>
-            
-            <div id="alertContainer"></div>
-            
-            <div class="card">
-                <div class="card-header">
-                    <h3>All Products</h3>
-                    <div>
-                        <select id="categoryFilter" class="form-control" style="width: auto; display: inline-block;">
-                            <option value="">All Categories</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <table id="productsTable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Product</th>
-                                <th>Category</th>
-                                <th>Price</th>
-                                <th>Stock</th>
-                                <th>Sales</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Products will be loaded via JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+<div class="main">
+  <div id="top-navbar-placeholder"></div>
+
+  <div class="content">
+    <div class="page-header">
+      <h2>Product Management</h2>
+      <button class="btn btn-primary" id="addProductBtn">
+        <i class="fas fa-plus"></i> Add Product
+      </button>
     </div>
 
-    <!-- Add Product Modal -->
-    <div class="modal" id="addProductModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Add New Product</h3>
-                <span class="close">&times;</span>
-            </div>
-            <div class="modal-body">
-                <form id="addProductForm">
-                    <div class="form-group">
-                        <label for="productName">Product Name</label>
-                        <input type="text" id="productName" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="productCategory">Category</label>
-                        <select id="productCategory" class="form-control" required>
-                            <option value="">Select Category</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="productPrice">Price</label>
-                        <input type="number" id="productPrice" class="form-control" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="productStock">Stock Quantity</label>
-                        <input type="number" id="productStock" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="productDescription">Description</label>
-                        <textarea id="productDescription" class="form-control" rows="4"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn" onclick="document.getElementById('addProductModal').style.display='none'">Cancel</button>
-                <button type="button" class="btn btn-primary" id="saveProductBtn">Save Product</button>
-            </div>
-        </div>
+    <div id="alertContainer"></div>
+
+    <div class="card">
+      <div class="card-header"><h3>All Products</h3></div>
+      <div class="table-responsive">
+        <table id="productsTable">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Price (₹)</th>
+              <th>Stock</th>
+              <th>Status</th>
+              <th>Category</th>
+              <th>Subcategory</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
+  </div>
+</div>
 
-    <!-- Edit Product Modal -->
-    <div class="modal" id="editProductModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Edit Product</h3>
-                <span class="close">&times;</span>
-            </div>
-            <div class="modal-body">
-                <form id="editProductForm">
-                    <input type="hidden" id="editProductId">
-                    <div class="form-group">
-                        <label for="editProductName">Product Name</label>
-                        <input type="text" id="editProductName" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editProductCategory">Category</label>
-                        <select id="editProductCategory" class="form-control" required>
-                            <option value="">Select Category</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="editProductPrice">Price</label>
-                        <input type="number" id="editProductPrice" class="form-control" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editProductStock">Stock Quantity</label>
-                        <input type="number" id="editProductStock" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editProductSales">Total Sales</label>
-                        <input type="number" id="editProductSales" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editProductDescription">Description</label>
-                        <textarea id="editProductDescription" class="form-control" rows="4"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn" onclick="document.getElementById('editProductModal').style.display='none'">Cancel</button>
-                <button type="button" class="btn btn-primary" id="updateProductBtn">Update Product</button>
-            </div>
-        </div>
+<!-- ✅ Add/Edit Modal -->
+<div class="modal" id="productModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTitle">Add Product</h3>
+      <span class="close" onclick="closeModal()">&times;</span>
     </div>
+    <div class="modal-body">
+      <form id="productForm">
+        <input type="hidden" id="productId" />
 
-    <script src="js/main.js"></script>
-    <script src="js/products.js"></script>
-    <script src="js/sidebar.js"></script>
-    <script src="js/topnav.js"></script>
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" id="productName" required />
+        </div>
 
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="productDescription"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Price</label>
+          <input type="number" id="productPrice" min="0" step="0.01" required />
+        </div>
+
+        <div class="form-group">
+          <label>Stock</label>
+          <input type="number" id="productStock" min="0" required />
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <select id="productStatus">
+            <option value="ACTIVE">Active</option>
+            <option value="INACTIVE">Inactive</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Category</label>
+          <select id="categorySelect" required></select>
+        </div>
+
+        <div class="form-group">
+          <label>Subcategory</label>
+          <select id="subCategorySelect" required></select>
+        </div>
+
+        <div class="form-group">
+          <label>Specifications</label>
+          <div id="specificationsContainer"></div>
+          <button type="button" onclick="addSpecField()">+ Add Spec</button>
+        </div>
+
+        <div class="form-group">
+          <label>Image</label>
+          <input type="file" id="productImage" accept="image/*" />
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitProduct()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="js/sidebar.js"></script>
+<script src="js/topnav.js"></script>
+<script>
+const API_BASE = "https://ecom-b-e85t.onrender.com/api";
+const token = localStorage.getItem("adminToken");
+const headers = {
+  "Authorization": `Bearer ${token}`,
+  "Content-Type": "application/json",
+};
+
+if (!token) {
+  alert("Login required");
+  window.location.href = "admin-login.html";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadProducts();
+  loadCategories();
+  document.getElementById("addProductBtn").addEventListener("click", showAddModal);
+  document.getElementById("categorySelect").addEventListener("change", loadSubCategories);
+});
+
+function showAddModal() {
+  document.getElementById("modalTitle").innerText = "Add Product";
+  document.getElementById("productForm").reset();
+  document.getElementById("productId").value = "";
+  document.getElementById("specificationsContainer").innerHTML = "";
+  document.getElementById("productModal").style.display = "block";
+}
+
+function closeModal() {
+  document.getElementById("productModal").style.display = "none";
+}
+
+function loadCategories() {
+  fetch(`${API_BASE}/categories`, { headers })
+    .then(res => res.json())
+    .then(categories => {
+      const categorySelect = document.getElementById("categorySelect");
+      categorySelect.innerHTML = `<option value="">Select Category</option>`;
+      categories.forEach(cat => {
+        categorySelect.innerHTML += `<option value="${cat.id}">${cat.name}</option>`;
+      });
+    });
+}
+
+function loadSubCategories() {
+  const catId = document.getElementById("categorySelect").value;
+  fetch(`${API_BASE}/subcategories/by-category/${catId}`, { headers })
+    .then(res => res.json())
+    .then(subcats => {
+      const subCatSelect = document.getElementById("subCategorySelect");
+      subCatSelect.innerHTML = `<option value="">Select Subcategory</option>`;
+      subcats.forEach(sc => {
+        subCatSelect.innerHTML += `<option value="${sc.id}">${sc.name}</option>`;
+      });
+    });
+}
+
+function loadProducts() {
+  fetch(`${API_BASE}/products/admin/all`, { headers })
+    .then(res => res.json())
+    .then(products => {
+      const tbody = document.querySelector("#productsTable tbody");
+      tbody.innerHTML = "";
+      products.forEach(p => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td><img src="${p.imageUrl || 'placeholder.jpg'}" width="50" /></td>
+          <td>${p.name}</td>
+          <td>${p.price}</td>
+          <td>${p.stock}</td>
+          <td>${p.status}</td>
+          <td>${p.categoryName || "N/A"}</td>
+          <td>${p.subCategoryName || "N/A"}</td>
+          <td>
+            <button class="btn btn-sm btn-primary" onclick="editProduct(${p.id})">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteProduct(${p.id})">Delete</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    });
+}
+
+function addSpecField(k = "", v = "") {
+  const container = document.getElementById("specificationsContainer");
+  const div = document.createElement("div");
+  div.innerHTML = `
+    <input type="text" placeholder="Key" value="${k}" />
+    <input type="text" placeholder="Value" value="${v}" />
+    <button type="button" onclick="this.parentElement.remove()">x</button>
+  `;
+  container.appendChild(div);
+}
+
+function submitProduct() {
+  const id = document.getElementById("productId").value;
+  const payload = {
+    name: document.getElementById("productName").value,
+    description: document.getElementById("productDescription").value,
+    price: parseFloat(document.getElementById("productPrice").value),
+    stock: parseInt(document.getElementById("productStock").value),
+    status: document.getElementById("productStatus").value,
+    subCategoryId: parseInt(document.getElementById("subCategorySelect").value),
+    specifications: [...document.querySelectorAll("#specificationsContainer div")].map(div => ({
+      key: div.children[0].value,
+      value: div.children[1].value
+    }))
+  };
+
+  const method = id ? "PUT" : "POST";
+  const url = id ? `${API_BASE}/products/admin/${id}` : `${API_BASE}/products/admin`;
+
+  fetch(url, {
+    method,
+    headers,
+    body: JSON.stringify(payload)
+  })
+  .then(res => res.json())
+  .then(data => {
+    const image = document.getElementById("productImage").files[0];
+    if (image) {
+      const formData = new FormData();
+      formData.append("image", image);
+      fetch(`${API_BASE}/products/admin/${data.id}/image`, {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${token}` },
+        body: formData
+      });
+    }
+    showAlert("Product saved successfully", "success");
+    closeModal();
+    loadProducts();
+  });
+}
+
+function editProduct(id) {
+  fetch(`${API_BASE}/products/admin/${id}`, { headers })
+    .then(res => res.json())
+    .then(p => {
+      document.getElementById("productId").value = p.id;
+      document.getElementById("productName").value = p.name;
+      document.getElementById("productDescription").value = p.description;
+      document.getElementById("productPrice").value = p.price;
+      document.getElementById("productStock").value = p.stock;
+      document.getElementById("productStatus").value = p.status;
+      document.getElementById("modalTitle").innerText = "Edit Product";
+      document.getElementById("specificationsContainer").innerHTML = "";
+      p.specifications?.forEach(s => addSpecField(s.key, s.value));
+      loadCategories(); // reload categories so subcategories load
+      setTimeout(() => {
+        document.getElementById("categorySelect").value = ""; // optional
+        loadSubCategories();
+        setTimeout(() => {
+          document.getElementById("subCategorySelect").value = p.subCategoryId;
+        }, 300);
+      }, 300);
+      document.getElementById("productModal").style.display = "block";
+    });
+}
+
+function deleteProduct(id) {
+  if (confirm("Are you sure to delete this product?")) {
+    fetch(`${API_BASE}/products/admin/${id}`, {
+      method: "DELETE",
+      headers
+    }).then(() => {
+      showAlert("Product deleted", "success");
+      loadProducts();
+    });
+  }
+}
+
+function showAlert(msg, type = "success") {
+  const div = document.createElement("div");
+  div.className = `alert alert-${type}`;
+  div.innerText = msg;
+  document.getElementById("alertContainer").innerHTML = "";
+  document.getElementById("alertContainer").appendChild(div);
+  setTimeout(() => div.remove(), 3000);
+}
+</script>
 </body>
 </html>

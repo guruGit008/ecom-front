@@ -312,25 +312,43 @@
 
 .profile-dropdown {
   position: relative;
+  display: inline-block;
+  font-family: Arial, sans-serif;
+}
+
+.profile-dropdown-toggle {
+  cursor: pointer;
+  color: #fff;
+  font-weight: 600;
+  padding: 8px 12px;
+  background-color: #12959f;
+  border: none;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .profile-dropdown .dropdown-menu {
   display: none;
   position: absolute;
-  right: 0;
+  top: 0;
+  left: 100%;
+  margin-left: 10px;
   background-color: #fff;
   color: #333;
-  padding: 8px 0;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 5px 0;
+  border: 1px solid #12959f;
+  border-radius: 6px;
   list-style: none;
   z-index: 999;
   min-width: 160px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 .profile-dropdown .dropdown-menu li {
   padding: 8px 16px;
+  transition: background-color 0.2s;
 }
 
 .profile-dropdown .dropdown-menu li a {
@@ -339,14 +357,14 @@
   display: block;
 }
 
-.profile-dropdown .dropdown-menu li a:hover {
-  background-color: #f5f5f5;
+.profile-dropdown .dropdown-menu li:hover {
+  background-color: #f0f0f0;
 }
 
-.profile-dropdown:hover .dropdown-menu,
-.profile-dropdown.active .dropdown-menu {
+.profile-dropdown:hover .dropdown-menu {
   display: block;
 }
+
 
 /*=========================================================
  04 -> Add to cart
