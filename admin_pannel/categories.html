@@ -5,21 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Categories | E-commerce Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
-
   <link rel="stylesheet" href="css/style.css"/>
-   <style>
-        .error-msg {
-    color: red;
-    font-size: 12px;
-    margin-top: 4px;
-    display: none;
-  }
-   .form-text {
-    color: #6c757d;
-    font-size: 12px;
-    margin-top: 2px;
-  }
-  </style>
 </head>
 <body>
   <div id="sidebar-placeholder"></div>
@@ -71,20 +57,14 @@
           <div class="form-group">
             <label for="categoryName">Category Name</label>
             <input type="text" id="categoryName" class="form-control" required>
-            <small class="form-text">Max 30 characters only.</small>
-            <div id="categoryNameError" class="error-msg"></div>
           </div>
           <div class="form-group">
             <label for="categorySlug">Slug</label>
             <input type="text" id="categorySlug" class="form-control">
-
-
           </div>
           <div class="form-group">
             <label for="categoryDescription">Description</label>
             <textarea id="categoryDescription" class="form-control" rows="4"></textarea>
-            <small class="form-text">Max 100 words.</small>
-            <div id="categoryDescriptionError" class="error-msg"></div>
           </div>
           <div class="form-group">
             <label for="categoryStatus">Status</label>
@@ -92,14 +72,10 @@
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>
-            <small class="form-text">Please choose a status.</small>
-            <div id="categoryStatusError" class="error-msg"></div>
           </div>
           <div class="form-group">
             <label for="categoryImage">Image</label>
             <input type="file" id="categoryImage" accept="image/*" class="form-control" />
-            <small class="form-text">Max size: 100 KB | Ratio: 1:1 (Square)</small>
-            <div id="categoryImageError" class="error-msg"></div>
           </div>
         </form>
       </div>
@@ -123,7 +99,6 @@
           <div class="form-group">
             <label for="editCategoryName">Category Name</label>
             <input type="text" id="editCategoryName" class="form-control" required>
-            <div id="editCategoryNameError" class="error-msg"></div>
           </div>
           <div class="form-group">
             <label for="editCategorySlug">Slug</label>
@@ -132,7 +107,6 @@
           <div class="form-group">
             <label for="editCategoryDescription">Description</label>
             <textarea id="editCategoryDescription" class="form-control" rows="4"></textarea>
-          <div id="editCategoryDescriptionError" class="error-msg"></div>
           </div>
           <div class="form-group">
             <label for="editCategoryStatus">Status</label>
@@ -140,7 +114,6 @@
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>
-            <div id="categoryStatusError" class="error-msg"></div>
           </div>
           <!-- Optional: Image update in edit modal -->
         </form>
@@ -157,7 +130,5 @@
   <script src="js/categories.js"></script>
   <script src="js/sidebar.js"></script>
   <script src="js/topnav.js"></script>
-  <!-- <script src="js/restriction.js"></script> -->
-
 </body>
 </html>

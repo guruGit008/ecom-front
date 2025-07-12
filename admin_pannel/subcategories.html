@@ -6,21 +6,6 @@
   <title>Subcategories | E-commerce Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
   <link rel="stylesheet" href="css/style.css"/>
-  <style>
-      .error-msg {
-    color: red;
-    font-size: 12px;
-    display: none;
-    margin-top: 4px;
-  }
-
-  .form-text {
-    color: #6c757d;
-    font-size: 12px;
-    margin-top: 4px;
-  }
-  
-  </style>
 </head>
 <body>
   <div id="sidebar-placeholder"></div>
@@ -74,19 +59,14 @@
           <div class="form-group">
             <label for="subCategoryName">Name</label>
             <input type="text" id="subCategoryName" class="form-control" required>
-             <small class="form-text">Max 30 characters.</small>
-            <div id="subCategoryNameError" class="error-msg"></div>
           </div>
           <div class="form-group">
             <label for="subCategorySlug">Slug</label>
             <input type="text" id="subCategorySlug" class="form-control">
-            <small class="form-text">Auto-generated from the name. You can edit if needed.</small>
           </div>
           <div class="form-group">
             <label for="subCategoryDescription">Description</label>
             <textarea id="subCategoryDescription" class="form-control" rows="3"></textarea>
-            <small class="form-text">Max 100 words.</small>
-            <div id="subCategoryDescriptionError" class="error-msg"></div>
           </div>
           <div class="form-group">
             <label for="subCategoryStatus">Status</label>
@@ -94,13 +74,10 @@
               <option value="ACTIVE">Active</option>
               <option value="INACTIVE">Inactive</option>
             </select>
-            <small class="form-text">Please choose a status.</small>
-            <div id="subCategoryStatusError" class="error-msg"></div>
           </div>
           <div class="form-group">
             <label for="subCategoryCategory">Parent Category</label>
             <select id="subCategoryCategory" class="form-control" required></select>
-             <small class="form-text">Select the main category this subcategory belongs to.</small>
           </div>
         </form>
       </div>
@@ -124,35 +101,25 @@
           <div class="form-group">
             <label for="editSubCategoryName">Name</label>
             <input type="text" id="editSubCategoryName" class="form-control" required>
-             <small class="form-text">Max 30 characters.</small>
-            <div id="editSubCategoryNameError" class="error-msg"></div>
           </div>
           <div class="form-group">
             <label for="editSubCategorySlug">Slug</label>
             <input type="text" id="editSubCategorySlug" class="form-control">
-                <small class="form-text">Auto-generated from the name. You can edit if needed.</small>
-
           </div>
           <div class="form-group">
             <label for="editSubCategoryDescription">Description</label>
             <textarea id="editSubCategoryDescription" class="form-control" rows="3"></textarea>
-                <small class="form-text">Max 100 words.</small>
-            <div id="editSubCategoryDescriptionError" class="error-msg"></div>
           </div>
           <div class="form-group">
             <label for="editSubCategoryStatus">Status</label>
             <select id="editSubCategoryStatus" class="form-control">
               <option value="ACTIVE">Active</option>
               <option value="INACTIVE">Inactive</option>
-                  <small class="form-text">Please choose a status.</small>
-                      <div id="editSubCategoryStatusError" class="error-msg"></div>
             </select>
           </div>
           <div class="form-group">
             <label for="editSubCategoryCategory">Parent Category</label>
             <select id="editSubCategoryCategory" class="form-control" required></select>
-                <small class="form-text">Select the main category this subcategory belongs to.</small>
-
           </div>
         </form>
       </div>
@@ -167,7 +134,7 @@
 <!-- ✅ Replace your <script> tag block at the bottom with this FIXED version -->
 
 <script>
-  const API_BASE = 'https://ecom-b-e85t.onrender.com/api';
+  const API_BASE = 'http://localhost:8080/api';
   const token = localStorage.getItem('adminToken');
 
   if (!token) {
@@ -327,7 +294,7 @@
     if (addBtn) {
       addBtn.addEventListener('click', () => {
         document.getElementById('addSubCategoryForm').reset();
-        document.getElementById('addSubCategoryModal').style.display = 'flex';
+        document.getElementById('addSubCategoryModal').style.display = 'block';
       });
     }
   });
@@ -340,7 +307,5 @@
 
   <script src="js/sidebar.js"></script>
   <script src="js/topnav.js"></script>
-  <script src="js/restrction.js"></script>
-  
 </body>
 </html>
