@@ -83,7 +83,7 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       // Load Products
-      fetch("http://localhost:8080/api/products/all")
+      fetch("https://ecom-b-e85t.onrender.com/api/products/all")
         .then((res) => res.json())
         .then((products) => {
           const container = document.getElementById("product-container");
@@ -115,7 +115,7 @@
         .catch((err) => console.error("❌ Error loading products:", err));
 
       // Load Categories
-      fetch("http://localhost:8080/api/categories")
+      fetch("https://ecom-b-e85t.onrender.com/api/categories")
         .then((res) => res.json())
         .then((categories) => {
           const catContainer = document.getElementById("category-container");
