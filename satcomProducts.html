@@ -39,6 +39,39 @@
 
 
     </head>
+    <style>
+      .product-action {
+  margin-top: 10px; /* Reduce this if needed */
+  padding-top: 0px;  /* Ensure it starts tight against specs */
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid #004080;
+  color: #004080;
+  background-color: transparent;
+  transition: 0.3s ease;
+  width: 100%;
+}
+
+.btn:hover {
+  background-color: #004080;
+  color: white;
+}
+
+.datasheet-button {
+  margin-bottom: 8px;
+}
+
+
+    </style>
 	<body>
 		<!-- HEADER -->
          	<div id="header-placeholder"></div>
@@ -68,9 +101,9 @@
 					<!-- STORE -->
 					<div id="store" class="col-md-9">
 											<!-- store products -->
-						<div class="row">
+						<!-- <div class="row"> -->
 							<!-- Product 1 -->
-		<div class="col-md-3 col-xs-6">
+		<!-- <div class="col-md-3 col-xs-6">
   <div class="product modern-product-card" data-product-id="block-up-converter" data-product-name="Block UP Converter" data-product-image="./img/block down converter.jpeg">
 
     <a href="commingSoonPage.html" class="product-top-link"> <div class="product-img">
@@ -92,9 +125,9 @@
       </button>
     </div>
   </div>
-</div>
+</div> -->
 
-		<div class="col-md-3 col-xs-6">
+		<!-- <div class="col-md-3 col-xs-6">
   <div class="product modern-product-card" data-product-id="block-up-converter" data-product-name="Block UP Converter" data-product-image="./img/block down converter.jpeg">
 
     <a href="commingSoonPage.html" class="product-top-link"> <div class="product-img">
@@ -188,6 +221,150 @@
       </button>
     </div>
   </div>
+</div> -->
+
+<div class="row">
+
+  <!-- Block Down Converter -->
+  <div class="col-md-3 col-sm-6 col-xs-12">
+    <div class="product modern-product-card">
+      <a href="commingSoonPage.html" class="product-top-link">
+        <div class="product-img">
+          <img src="./img/Ku Dual-band EXT AirBDC.jpg" alt="Block Down Converter">
+          <span class="badge-band">Ku-BAND</span>
+        </div>
+        <div class="product-body" style="text-align: center; padding: 15px;">
+          <p class="product-category">SatCom Products</p>
+          <h3 class="product-name" style="color:#004080;">Block Down Converter</h3>
+          <div class="product-specs" style="font-size: 13px; display: flex; flex-direction: column; gap: 4px;">
+            <div style="display: flex; justify-content: center; align-items: center;">
+              <i class="fa fa-wifi" style="color: #004080; margin-right: 6px;"></i>
+              <span style="font-weight: 600; color: #004080; margin-right: 5px;">Frequency:</span>
+              <span style="font-weight: bold;">11.7 – 12.2 GHz</span>
+            </div>
+            <div style="display: flex; justify-content: center; align-items: center;">
+              <i class="fa fa-bolt" style="color: #004080; margin-right: 6px;"></i>
+              <span style="font-weight: 600; color: #004080; margin-right: 5px;">Gain:</span>
+              <span style="font-weight: bold;">55 dB</span>
+            </div>
+          </div>
+        </div>
+      </a>
+      <div class="product-action" style="padding: 0 15px 15px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
+        <a href="./img/New Doc 07-05-2025 12.44.pdf" target="_blank" class="btn datasheet-button" style="width: 100%;">
+          <i class="fa fa-file-pdf-o"></i> Datasheet
+        </a>
+        <button class="btn customize-product" data-toggle="modal" data-target="#customizeModal" style="width: 100%;">
+          <i class="fa fa-cog"></i> Customize
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Low Noise BDC -->
+  <div class="col-md-3 col-sm-6 col-xs-12">
+    <div class="product modern-product-card">
+      <a href="commingSoonPage.html" class="product-top-link">
+        <div class="product-img">
+          <img src="./img/17.jpg" alt="Low Noise BDC">
+        </div>
+        <div class="product-body" style="text-align: center; padding: 15px;">
+          <p class="product-category">SatCom Products</p>
+          <h3 class="product-name" style="color:#004080;">Low Noise BDC</h3>
+          <div class="product-specs" style="font-size: 13px; display: flex; flex-direction: column; gap: 4px;">
+            <div style="display: flex; justify-content: center; align-items: center;">
+              <i class="fa fa-wifi" style="color: #004080; margin-right: 6px;"></i>
+              <span style="font-weight: 600; color: #004080; margin-right: 5px;">Frequency:</span>
+              <span style="font-weight: bold;">10.7 – 12.75 GHz</span>
+            </div>
+            <div style="display: flex; justify-content: center; align-items: center;">
+              <i class="fa fa-bolt" style="color: #004080; margin-right: 6px;"></i>
+              <span style="font-weight: 600; color: #004080; margin-right: 5px;">Gain:</span>
+              <span style="font-weight: bold;">60 dB</span>
+            </div>
+          </div>
+        </div>
+      </a>
+      <div class="product-action" style="padding: 0 15px 15px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
+        <a href="./img/New Doc 07-05-2025 12.44.pdf" target="_blank" class="btn datasheet-button" style="width: 100%;">
+          <i class="fa fa-file-pdf-o"></i> Datasheet
+        </a>
+        <button class="btn customize-product" data-toggle="modal" data-target="#customizeModal" style="width: 100%;">
+          <i class="fa fa-cog"></i> Customize
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Low Noise Amplifier -->
+  <div class="col-md-3 col-sm-6 col-xs-12">
+    <div class="product modern-product-card">
+      <a href="commingSoonPage.html" class="product-top-link">
+        <div class="product-img">
+          <img src="./img/LNA!.jpg" alt="Low Noise Amplifier">
+        </div>
+        <div class="product-body" style="text-align: center; padding: 15px;">
+          <p class="product-category">SatCom Products</p>
+          <h3 class="product-name" style="color:#004080;">Low Noise Amplifier</h3>
+          <div class="product-specs" style="font-size: 13px; display: flex; flex-direction: column; gap: 4px;">
+            <div style="display: flex; justify-content: center; align-items: center;">
+              <i class="fa fa-wifi" style="color: #004080; margin-right: 6px;"></i>
+              <span style="font-weight: 600; color: #004080; margin-right: 5px;">Frequency:</span>
+              <span style="font-weight: bold;">12 – 18 GHz</span>
+            </div>
+            <div style="display: flex; justify-content: center; align-items: center;">
+              <i class="fa fa-bolt" style="color: #004080; margin-right: 6px;"></i>
+              <span style="font-weight: 600; color: #004080; margin-right: 5px;">Gain:</span>
+              <span style="font-weight: bold;">65 dB</span>
+            </div>
+          </div>
+        </div>
+      </a>
+      <div class="product-action" style="padding: 0 15px 15px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
+        <a href="./img/New Doc 07-05-2025 12.44.pdf" target="_blank" class="btn datasheet-button" style="width: 100%;">
+          <i class="fa fa-file-pdf-o"></i> Datasheet
+        </a>
+        <button class="btn customize-product" data-toggle="modal" data-target="#customizeModal" style="width: 100%;">
+          <i class="fa fa-cog"></i> Customize
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Band Pass Filter -->
+  <div class="col-md-3 col-sm-6 col-xs-12">
+    <div class="product modern-product-card">
+      <a href="commingSoonPage.html" class="product-top-link">
+        <div class="product-img">
+          <img src="./img/X-band BPF.jpg" alt="Band Pass Filter">
+        </div>
+        <div class="product-body" style="text-align: center; padding: 15px;">
+          <p class="product-category">SatCom Products</p>
+          <h3 class="product-name" style="color:#004080;">Band Pass Filter</h3>
+          <div class="product-specs" style="font-size: 13px; display: flex; flex-direction: column; gap: 4px;">
+            <div style="display: flex; justify-content: center; align-items: center;">
+              <i class="fa fa-wifi" style="color: #004080; margin-right: 6px;"></i>
+              <span style="font-weight: 600; color: #004080; margin-right: 5px;">Frequency:</span>
+              <span style="font-weight: bold;">7.25 – 8.4 GHz</span>
+            </div>
+          </div>
+        </div>
+      </a>
+      <div class="product-action" style="padding: 0 15px 15px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
+        <a href="./img/New Doc 07-05-2025 12.44.pdf" target="_blank" class="btn datasheet-button" style="width: 100%;">
+          <i class="fa fa-file-pdf-o"></i> Datasheet
+        </a>
+        <button class="btn customize-product" data-toggle="modal" data-target="#customizeModal" style="width: 100%;">
+          <i class="fa fa-cog"></i> Customize
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -201,17 +378,9 @@
 
 
 
-</div>
-						</div>
-						<!-- /store products -->
-					</div>
-					<!-- /STORE -->
-				</div>
-				<!-- /row -->
-			</div>
-			<!-- /container -->
-		</div>
-		<!-- /SECTION -->
+
+
+
          
 <!-- Raw Materials products -->
 

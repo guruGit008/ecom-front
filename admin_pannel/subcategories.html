@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Subcategories | E-commerce Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <style>
+      .error-msg {
+    color: red;
+    font-size: 12px;
+    display: none;
+    margin-top: 4px;
+  }
+
+  .form-text {
+    color: #6c757d;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  
+  </style>
+</head>
+<body>
+  <div id="sidebar-placeholder"></div>
+
+  <div class="main">
+    <div id="top-navbar-placeholder"></div>
+
+    <div class="content">
+      <div class="page-header">
+        <h2>Subcategories Management</h2>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addSubCategoryModal">
+          <i class="fas fa-plus"></i> Add Subcategory
+        </button>
+      </div>
+
+      <div id="alertContainer"></div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>All Subcategories</h3>
+        </div>
+        <div class="table-responsive">
+          <table id="subcategoriesTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Slug</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Parent Category</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============= ADD SUBCATEGORY MODAL ============= -->
+  <div class="modal" id="addSubCategoryModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add New Subcategory</h3>
+        <span class="close" onclick="document.getElementById('addSubCategoryModal').style.display='none'">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="addSubCategoryForm">
+          <div class="form-group">
+            <label for="subCategoryName">Name</label>
+            <input type="text" id="subCategoryName" class="form-control" required>
+             <small class="form-text">Max 30 characters.</small>
+            <div id="subCategoryNameError" class="error-msg"></div>
+          </div>
+          <div class="form-group">
+            <label for="subCategorySlug">Slug</label>
+            <input type="text" id="subCategorySlug" class="form-control">
+            <small class="form-text">Auto-generated from the name. You can edit if needed.</small>
+          </div>
+          <div class="form-group">
+            <label for="subCategoryDescription">Description</label>
+            <textarea id="subCategoryDescription" class="form-control" rows="3"></textarea>
+            <small class="form-text">Max 100 words.</small>
+            <div id="subCategoryDescriptionError" class="error-msg"></div>
+          </div>
+          <div class="form-group">
+            <label for="subCategoryStatus">Status</label>
+            <select id="subCategoryStatus" class="form-control">
+              <option value="ACTIVE">Active</option>
+              <option value="INACTIVE">Inactive</option>
+            </select>
+            <small class="form-text">Please choose a status.</small>
+            <div id="subCategoryStatusError" class="error-msg"></div>
+          </div>
+          <div class="form-group">
+            <label for="subCategoryCategory">Parent Category</label>
+            <select id="subCategoryCategory" class="form-control" required></select>
+             <small class="form-text">Select the main category this subcategory belongs to.</small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="document.getElementById('addSubCategoryModal').style.display='none'">Cancel</button>
+        <button class="btn btn-primary" onclick="saveSubCategory()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============= EDIT SUBCATEGORY MODAL ============= -->
+  <div class="modal" id="editSubCategoryModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Edit Subcategory</h3>
+        <span class="close" onclick="document.getElementById('editSubCategoryModal').style.display='none'">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="editSubCategoryForm">
+          <input type="hidden" id="editSubCategoryId">
+          <div class="form-group">
+            <label for="editSubCategoryName">Name</label>
+            <input type="text" id="editSubCategoryName" class="form-control" required>
+             <small class="form-text">Max 30 characters.</small>
+            <div id="editSubCategoryNameError" class="error-msg"></div>
+          </div>
+          <div class="form-group">
+            <label for="editSubCategorySlug">Slug</label>
+            <input type="text" id="editSubCategorySlug" class="form-control">
+                <small class="form-text">Auto-generated from the name. You can edit if needed.</small>
+
+          </div>
+          <div class="form-group">
+            <label for="editSubCategoryDescription">Description</label>
+            <textarea id="editSubCategoryDescription" class="form-control" rows="3"></textarea>
+                <small class="form-text">Max 100 words.</small>
+            <div id="editSubCategoryDescriptionError" class="error-msg"></div>
+          </div>
+          <div class="form-group">
+            <label for="editSubCategoryStatus">Status</label>
+            <select id="editSubCategoryStatus" class="form-control">
+              <option value="ACTIVE">Active</option>
+              <option value="INACTIVE">Inactive</option>
+                  <small class="form-text">Please choose a status.</small>
+                      <div id="editSubCategoryStatusError" class="error-msg"></div>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editSubCategoryCategory">Parent Category</label>
+            <select id="editSubCategoryCategory" class="form-control" required></select>
+                <small class="form-text">Select the main category this subcategory belongs to.</small>
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="document.getElementById('editSubCategoryModal').style.display='none'">Cancel</button>
+        <button class="btn btn-primary" onclick="updateSubCategory()">Update</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Only highlighting important JS FIXES -->
+<!-- ✅ Replace your <script> tag block at the bottom with this FIXED version -->
+
+<script>
+  const API_BASE = 'https://ecom-b-e85t.onrender.com/api';
+  const token = localStorage.getItem('adminToken');
+
+  if (!token) {
+    alert("Please login as admin first.");
+    window.location.href = "/admin_panel/admin-login.html";
+  }
+
+  const tableBody = document.querySelector('#subcategoriesTable tbody');
+  const categorySelect = document.getElementById('subCategoryCategory');
+  const editCategorySelect = document.getElementById('editSubCategoryCategory');
+
+  async function loadCategoriesDropdown() {
+    const res = await fetch(`${API_BASE}/categories/admin/all`, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const data = await res.json();
+    categorySelect.innerHTML = '';
+    editCategorySelect.innerHTML = '';
+    data.forEach(cat => {
+      const opt = `<option value="${cat.id}">${cat.name}</option>`;
+      categorySelect.innerHTML += opt;
+      editCategorySelect.innerHTML += opt;
+    });
+  }
+
+  async function loadSubCategories() {
+    const res = await fetch(`${API_BASE}/subcategories`, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const data = await res.json();
+    tableBody.innerHTML = '';
+    data.forEach(sub => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${sub.id}</td>
+        <td>${sub.name}</td>
+        <td>${sub.slug}</td>
+        <td>${sub.description || ''}</td>
+        <td><span class="status ${sub.status.toLowerCase()}">${sub.status}</span></td>
+        <td>${sub.categoryName || 'Unknown'}</td>
+        <td>
+          <button class="btn btn-sm btn-primary edit-btn" data-id="${sub.id}">Edit</button>
+          <button class="btn btn-sm btn-danger delete-btn" data-id="${sub.id}">Delete</button>
+        </td>
+      `;
+      tableBody.appendChild(row);
+    });
+
+    // ✅ Re-bind click listeners after rendering
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', () => openEditModal(btn.dataset.id));
+    });
+
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', () => deleteSubCategory(btn.dataset.id));
+    });
+  }
+
+  async function saveSubCategory() {
+    const subCategory = {
+      name: document.getElementById('subCategoryName').value,
+      slug: document.getElementById('subCategorySlug').value,
+      description: document.getElementById('subCategoryDescription').value,
+      status: document.getElementById('subCategoryStatus').value,
+      category: {
+        id: document.getElementById('subCategoryCategory').value
+      }
+    };
+
+    await fetch(`${API_BASE}/subcategories`, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(subCategory)
+    });
+
+    document.getElementById('addSubCategoryModal').style.display = 'none';
+    loadSubCategories();
+  }
+
+  async function openEditModal(id) {
+    const res = await fetch(`${API_BASE}/subcategories`, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const subs = await res.json();
+    const sub = subs.find(s => s.id == id);
+
+    document.getElementById('editSubCategoryId').value = sub.id;
+    document.getElementById('editSubCategoryName').value = sub.name;
+    document.getElementById('editSubCategorySlug').value = sub.slug;
+    document.getElementById('editSubCategoryDescription').value = sub.description;
+    document.getElementById('editSubCategoryStatus').value = sub.status;
+    document.getElementById('editSubCategoryCategory').value = sub.categoryId;
+
+    document.getElementById('editSubCategoryModal').style.display = 'block';
+  }
+
+  async function updateSubCategory() {
+    const id = document.getElementById('editSubCategoryId').value;
+    const updatedSubCategory = {
+      name: document.getElementById('editSubCategoryName').value,
+      slug: document.getElementById('editSubCategorySlug').value,
+      description: document.getElementById('editSubCategoryDescription').value,
+      status: document.getElementById('editSubCategoryStatus').value,
+      category: {
+        id: document.getElementById('editSubCategoryCategory').value
+      }
+    };
+
+    await fetch(`${API_BASE}/subcategories/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedSubCategory)
+    });
+
+    document.getElementById('editSubCategoryModal').style.display = 'none';
+    loadSubCategories();
+  }
+
+  async function deleteSubCategory(id) {
+    if (!confirm("Are you sure you want to delete this subcategory?")) return;
+    await fetch(`${API_BASE}/subcategories/${id}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    loadSubCategories();
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    loadCategoriesDropdown();
+    loadSubCategories();
+
+    // Bind slug generation
+    document.getElementById('subCategoryName').addEventListener('input', function () {
+      document.getElementById('subCategorySlug').value = generateSlug(this.value);
+    });
+
+    document.getElementById('editSubCategoryName').addEventListener('input', function () {
+      document.getElementById('editSubCategorySlug').value = generateSlug(this.value);
+    });
+
+    // Modal close on outside click
+    window.onclick = function (event) {
+      if (event.target == document.getElementById('addSubCategoryModal'))
+        event.target.style.display = "none";
+      if (event.target == document.getElementById('editSubCategoryModal'))
+        event.target.style.display = "none";
+    };
+
+    // ✅ Modal open trigger
+    const addBtn = document.querySelector('[data-toggle="modal"][data-target="#addSubCategoryModal"]');
+    if (addBtn) {
+      addBtn.addEventListener('click', () => {
+        document.getElementById('addSubCategoryForm').reset();
+        document.getElementById('addSubCategoryModal').style.display = 'flex';
+      });
+    }
+  });
+
+  function generateSlug(name) {
+    return name.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/^-+|-+$/g, '');
+  }
+</script>
+
+
+  <script src="js/sidebar.js"></script>
+  <script src="js/topnav.js"></script>
+  <script src="js/restrction.js"></script>
+  
+</body>
+</html>
